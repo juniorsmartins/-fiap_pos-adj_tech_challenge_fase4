@@ -1,5 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.EstudanteUtil;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,11 @@ class EstudanteControllerIntegrationTest {
             var response = estudanteController.criar(request);
             // Assert
             assertEquals(HttpStatus.CREATED, response.getStatusCode());
-            assertEquals(request.nome(), response.nome());
-            assertEquals(request.email(), response.usuario().email());
-            assertEquals(request.password(), response.usuario().passord());
-            assertEquals(RoleEnum.ESTUDANTE, response.usuario().role().nome());
+            var body = response.getBody();
+            assertEquals(request.nome(), body.nome());
+            assertEquals(request.email(), body.usuario().email());
+            assertEquals(request.password(), body.usuario().password());
+            assertEquals(RoleEnum.ROLE_ESTUDANTE, body.usuario().role().nome());
         }
     }
 

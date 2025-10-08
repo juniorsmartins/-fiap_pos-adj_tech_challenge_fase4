@@ -28,7 +28,7 @@ public class EstudanteController {
     @PostMapping
     public ResponseEntity<EstudanteResponse> criar(@RequestBody @Valid EstudanteRequest request) {
         var estudante = estudanteCriarInputPort.criar(request);
-        var response = estudantePresenter.toEstudanteResponse(estudante);
+        var response = estudantePresenter.toResponse(estudante);
         return ResponseEntity
                 .created(URI.create(URI_ESTUDANTES + "/" + response.id()))
                 .body(response);
