@@ -115,8 +115,28 @@ class EstudanteControllerIntegrationTest {
     }
 
     @Nested
-    @DisplayName("ConsultarPorId")
-    class ConsultarPorId {
+    @DisplayName("ConsultarPorIdValido")
+    class ConsultarPorIdValido {
 
+        @Test
+        void dadaRequisicaoValida_quandoConsultarPorId_entaoRetornarSucesso() {
+            var response = estudanteController.consultarPorId(estudanteEntity.getId());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            var body = response.getBody();
+            assertEquals(estudanteEntity.getId(), body.id());
+            assertEquals(estudanteEntity.getNome(), body.nome());
+        }
+    }
+
+    @Nested
+    @DisplayName("ConsultarPorIdInvalido")
+    class ConsultarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalida_quandoConsultarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(EstudanteNotFoundCustomException.class, () -> estudanteController
+                    .consultarPorId(idInexistente));
+        }
     }
 }
