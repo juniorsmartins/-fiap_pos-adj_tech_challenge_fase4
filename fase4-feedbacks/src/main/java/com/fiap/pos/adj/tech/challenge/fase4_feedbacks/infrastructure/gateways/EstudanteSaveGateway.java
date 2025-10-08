@@ -6,6 +6,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class EstudanteSaveGateway implements EstudanteSaveOutputPort {
 
     private final EstudantePresenter estudantePresenter;
 
+    @Transactional
     @Override
     public Estudante save(Estudante estudante) {
         var entity = estudantePresenter.toEntity(estudante);

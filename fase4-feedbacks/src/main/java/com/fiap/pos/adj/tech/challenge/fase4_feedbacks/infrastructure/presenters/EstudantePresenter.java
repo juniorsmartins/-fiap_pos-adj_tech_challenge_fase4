@@ -8,6 +8,8 @@ public interface EstudantePresenter {
 
     EstudanteResponse toResponse(Estudante estudante);
 
+    EstudanteResponse toResponse(EstudanteEntity entity);
+
     EstudanteEntity toEntity(Estudante estudante);
 
     Estudante toEstudante(EstudanteEntity entity);

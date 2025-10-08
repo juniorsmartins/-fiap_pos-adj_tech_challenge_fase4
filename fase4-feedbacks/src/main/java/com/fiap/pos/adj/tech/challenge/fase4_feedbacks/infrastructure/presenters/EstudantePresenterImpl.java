@@ -19,6 +19,12 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
     }
 
     @Override
+    public EstudanteResponse toResponse(EstudanteEntity entity) {
+        var usuarioResponse = usuarioPresenter.toResponse(entity.getUser());
+        return new EstudanteResponse(entity.getId(), entity.getNome(), usuarioResponse);
+    }
+
+    @Override
     public EstudanteEntity toEntity(Estudante estudante) {
         var userEntity = usuarioPresenter.toEntity(estudante.getUser());
         return new EstudanteEntity(estudante.getId(), estudante.getNome(), userEntity);

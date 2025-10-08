@@ -4,6 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.excep
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.EstudanteRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.EstudanteResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.EstudanteApagarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.EstudanteAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.EstudanteCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.EstudanteQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.EstudantePresenter;
@@ -28,6 +29,8 @@ public class EstudanteController {
 
     private final EstudanteQueryOutputPort estudanteQueryOutputPort;
 
+    private final EstudanteAtualizarInputPort estudanteAtualizarInputPort;
+
     private final EstudantePresenter estudantePresenter;
 
     @PostMapping
@@ -37,6 +40,15 @@ public class EstudanteController {
 
         return ResponseEntity
                 .created(URI.create(URI_ESTUDANTES + "/" + response.id()))
+                .body(response);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<EstudanteResponse> atualizarPorId(@PathVariable(name = "id") final UUID id, @RequestBody @Valid EstudanteRequest request) {
+        var response = estudanteAtualizarInputPort.atualizarPorId(id, request);
+
+        return ResponseEntity
+                .ok()
                 .body(response);
     }
 

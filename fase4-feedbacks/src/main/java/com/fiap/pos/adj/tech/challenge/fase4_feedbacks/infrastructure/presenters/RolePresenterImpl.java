@@ -14,6 +14,11 @@ public class RolePresenterImpl implements RolePresenter {
     }
 
     @Override
+    public RoleResponse toResponse(RoleEntity entity) {
+        return new RoleResponse(entity.getId(), entity.getNome());
+    }
+
+    @Override
     public RoleEntity toEntity(Papel papel) {
         return new RoleEntity(papel.getId(), papel.getNome());
     }

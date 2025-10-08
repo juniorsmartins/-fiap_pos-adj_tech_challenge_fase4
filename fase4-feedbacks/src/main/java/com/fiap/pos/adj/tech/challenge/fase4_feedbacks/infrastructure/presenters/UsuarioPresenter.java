@@ -8,6 +8,8 @@ public interface UsuarioPresenter {
 
     UsuarioResponse toResponse(Usuario usuario);
 
+    UsuarioResponse toResponse(UserEntity user);
+
     UserEntity toEntity(Usuario usuario);
 
     Usuario toUsuario(UserEntity entity);

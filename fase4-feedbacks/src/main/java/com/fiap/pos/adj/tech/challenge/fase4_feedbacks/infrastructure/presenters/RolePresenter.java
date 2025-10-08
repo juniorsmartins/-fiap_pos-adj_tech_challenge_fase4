@@ -8,6 +8,8 @@ public interface RolePresenter {
 
     RoleResponse toResponse(Papel papel);
 
+    RoleResponse toResponse(RoleEntity entity);
+
     RoleEntity toEntity(Papel papel);
 
     Papel toPapel(RoleEntity entity);

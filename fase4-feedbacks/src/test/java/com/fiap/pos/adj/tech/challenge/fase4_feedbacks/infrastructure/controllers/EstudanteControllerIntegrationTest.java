@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -86,9 +85,33 @@ class EstudanteControllerIntegrationTest {
     }
 
     @Nested
-    @DisplayName("AtualizarPorId")
-    class AtualizarPorId {
+    @DisplayName("AtualizarPorIdValido")
+    class AtualizarPorIdValido {
 
+        @Test
+        void dadaRequisicaoValida_quandoAtualizarPorId_entaoRetornarSucesso() {
+            var request = EstudanteUtil.montarEstudanteRequest("Atualizado", "atualizado@email.com", "99999");
+            var response = estudanteController.atualizarPorId(estudanteEntity.getId(), request);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            var body = response.getBody();
+            assertEquals(estudanteEntity.getId(), body.id());
+            assertEquals(estudanteEntity.getNome(), body.nome());
+            assertEquals(estudanteEntity.getUser().getEmail(), body.usuario().email());
+            assertEquals(estudanteEntity.getUser().getPassword(), body.usuario().password());
+        }
+    }
+
+    @Nested
+    @DisplayName("AtualizarPorIdInvalido")
+    class AtualizarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoAtualizarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+            var request = EstudanteUtil.montarEstudanteRequest("Atualizado", "atualizado@email.com", "99999");
+            assertThrows(EstudanteNotFoundCustomException.class, () -> estudanteController
+                    .atualizarPorId(idInexistente, request));
+        }
     }
 
     @Nested

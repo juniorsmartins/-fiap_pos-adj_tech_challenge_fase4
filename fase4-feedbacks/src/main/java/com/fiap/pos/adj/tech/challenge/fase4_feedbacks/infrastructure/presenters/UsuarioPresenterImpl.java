@@ -19,6 +19,12 @@ public class UsuarioPresenterImpl implements UsuarioPresenter {
     }
 
     @Override
+    public UsuarioResponse toResponse(UserEntity user) {
+        var roleResponse = rolePresenter.toResponse(user.getRole());
+        return new UsuarioResponse(user.getId(), user.getEmail(), user.getPassword(), roleResponse);
+    }
+
+    @Override
     public UserEntity toEntity(Usuario usuario) {
         var roleEntity = rolePresenter.toEntity(usuario.getRole());
         return new UserEntity(usuario.getId(), usuario.getEmail(), usuario.getPassword(), roleEntity);
