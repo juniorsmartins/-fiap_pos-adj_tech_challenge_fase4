@@ -2,17 +2,16 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controlle
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.EstudanteRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.EstudanteResponse;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.EstudanteApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.EstudanteCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.EstudantePresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = {EstudanteController.URI_ESTUDANTES})
@@ -23,6 +22,8 @@ public class EstudanteController {
 
     private final EstudanteCriarInputPort estudanteCriarInputPort;
 
+    private final EstudanteApagarInputPort estudanteApagarInputPort;
+
     private final EstudantePresenter estudantePresenter;
 
     @PostMapping
@@ -32,5 +33,13 @@ public class EstudanteController {
         return ResponseEntity
                 .created(URI.create(URI_ESTUDANTES + "/" + response.id()))
                 .body(response);
+    }
+
+    @DeleteMapping(path = {"/{id}"})
+    public ResponseEntity<Void> apagarPorId(@PathVariable(name = "id") final UUID id) {
+        estudanteApagarInputPort.apagarPorId(id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }

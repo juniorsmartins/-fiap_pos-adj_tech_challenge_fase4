@@ -1,7 +1,9 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http409.EmailConflictRulesCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.RoleRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.EstudanteUtil;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,14 +35,16 @@ class EstudanteControllerIntegrationTest {
     @Autowired
     private RoleRepository roleRepository;
 
+    private EstudanteEntity estudanteEntity;
+
     @BeforeEach
     void setUp() {
         var papelEntity = PapelUtil.montarRoleEntity(null, RoleEnum.ROLE_ESTUDANTE);
         roleRepository.save(papelEntity);
 
         var usuarioEntity = UsuarioUtil.montarUserEntity(null, EMAIL_TESTE, "55555", papelEntity);
-        var estudanteEntity = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", usuarioEntity);
-        estudanteRepository.save(estudanteEntity);
+        var studentEntity = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", usuarioEntity);
+        estudanteEntity = estudanteRepository.save(studentEntity);
     }
 
     @AfterEach
@@ -86,9 +92,26 @@ class EstudanteControllerIntegrationTest {
     }
 
     @Nested
-    @DisplayName("ApagarPorId")
-    class ApagarPorId {
+    @DisplayName("ApagarPorIdValido")
+    class ApagarPorIdValido {
 
+        @Test
+        void dadaRequisicaoValida_quandoApagarPorId_entaoRetornarRespontaComSucesso() {
+            var response = estudanteController.apagarPorId(estudanteEntity.getId());
+            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("ApagarPorIdInvalido")
+    class ApagarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalida_quandoApagarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(EstudanteNotFoundCustomException.class, () -> estudanteController
+                    .apagarPorId(idInexistente));
+        }
     }
 
     @Nested
