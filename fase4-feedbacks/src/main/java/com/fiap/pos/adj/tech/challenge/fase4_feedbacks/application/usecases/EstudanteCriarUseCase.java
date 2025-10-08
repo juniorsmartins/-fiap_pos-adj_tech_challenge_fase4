@@ -6,6 +6,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Estudante;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Usuario;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.validations.EstudanteValidation;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.validations.RoleValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,15 @@ public class EstudanteCriarUseCase implements EstudanteCriarInputPort {
 
     private final EstudanteSaveOutputPort estudanteSaveOutputPort;
 
+    private final EstudanteValidation estudanteValidation;
+
     private final RoleValidation roleValidation;
 
     @Override
     public Estudante criar(EstudanteRequest request) {
+
+        estudanteValidation.checkDuplicateEmail(null, request.email());
+
         var papel = roleValidation.getOrCreateRole(RoleEnum.ROLE_ESTUDANTE);
         var usuario = new Usuario(null, request.email(), request.password(), papel);
         var estudante = new Estudante(null, request.nome(), usuario);
