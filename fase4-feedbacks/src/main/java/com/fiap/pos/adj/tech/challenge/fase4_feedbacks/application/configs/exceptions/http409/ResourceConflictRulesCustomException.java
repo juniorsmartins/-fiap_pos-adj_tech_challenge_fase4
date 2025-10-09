@@ -5,7 +5,8 @@ import lombok.Getter;
 import java.io.Serial;
 
 @Getter
-public abstract sealed class ResourceConflictRulesCustomException extends RuntimeException permits EmailConflictRulesCustomException {
+public abstract sealed class ResourceConflictRulesCustomException extends RuntimeException permits
+        EmailConflictRulesCustomException, NomeDuplicatedCustomException {
 
     @Serial
     private static final long serialVersionUID = 1L;
