@@ -1,0 +1,57 @@
+volumes:
+  db_feedbacks:
+    name: db_feedbacks
+
+networks:
+  communication:
+    name: communication
+
+services:
+
+  api_feedbacks:
+    container_name: api_feedbacks
+    image: juniorsmartins/api_feedbacks:v0.0.1
+    build:
+      context: ../fase4-feedbacks
+      dockerfile: Dockerfile
+      args:
+        APP_NAME: "api_feedbacks"
+        APP_VERSION: "v0.0.1"
+        APP_DESCRIPTION: "API de Feedbacks para sistema educacional."
+    ports:
+      - "9050:9050"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 256M
+    environment:
+      - DB_HOST=database_feedbacks
+      - DB_NAME=db_feedbacks
+      - DB_PORT=5432
+    restart: on-failure
+    networks:
+      - communication
+    depends_on:
+      database_feedbacks:
+        condition: service_started
+
+  database_feedbacks:
+    container_name: database_feedbacks
+    image: postgres:17.0
+    ports:
+      - "5501:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    restart: always
+    environment:
+      POSTGRES_DB: db_feedbacks
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_feedbacks:/var/lib/postgresql/data
+    networks:
+      - communication
