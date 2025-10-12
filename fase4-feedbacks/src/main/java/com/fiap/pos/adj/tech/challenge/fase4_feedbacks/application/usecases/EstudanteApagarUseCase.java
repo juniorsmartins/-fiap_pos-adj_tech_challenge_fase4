@@ -20,7 +20,7 @@ public class EstudanteApagarUseCase implements EstudanteApagarInputPort {
     @Override
     public void apagarPorId(UUID id) {
         estudanteQueryOutputPort.findById(id)
-                .ifPresentOrElse(estudanteApagarOutputPort::apagar, () -> {
+                .ifPresentOrElse(estudante -> estudanteApagarOutputPort.apagarPorId(estudante.getId()), () -> {
                     throw new EstudanteNotFoundCustomException(id);
                 });
     }

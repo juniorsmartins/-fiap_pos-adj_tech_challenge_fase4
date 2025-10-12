@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class EstudanteApagarGateway implements EstudanteApagarOutputPort {
@@ -21,5 +23,11 @@ public class EstudanteApagarGateway implements EstudanteApagarOutputPort {
     public void apagar(Estudante estudante) {
         var entity = estudantePresenter.toEntity(estudante);
         estudanteRepository.delete(entity);
+    }
+
+    @Transactional
+    @Override
+    public void apagarPorId(UUID id) {
+        estudanteRepository.deleteById(id);
     }
 }
