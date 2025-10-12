@@ -6,7 +6,7 @@ import java.io.Serial;
 
 @Getter
 public abstract sealed class ResourceNotFoundCustomException extends RuntimeException permits EstudanteNotFoundCustomException,
-        RoleNotFoundCustomException {
+        RoleNotFoundCustomException, CursoNotFoundCustomException {
 
     @Serial
     private static final long serialVersionUID = 1L;

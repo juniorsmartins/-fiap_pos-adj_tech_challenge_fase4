@@ -1,6 +1,8 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http409.NomeDuplicatedCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.CursoUtil;
 import org.junit.jupiter.api.*;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,9 +28,11 @@ class CursoControllerIntegrationTest {
     @Autowired
     private CursoRepository cursoRepository;
 
+    private CursoEntity cursoEntity;
+
     @BeforeEach
     void setUp() {
-        var cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO);
+        cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO);
         cursoRepository.save(cursoEntity);
     }
 
@@ -57,6 +63,28 @@ class CursoControllerIntegrationTest {
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoCriar_entaoLancarExcecao() {
             var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
             assertThrows(NomeDuplicatedCustomException.class, () -> cursoController.criar(request));
+        }
+    }
+
+    @Nested
+    @DisplayName("ApagarPorIdValido")
+    class ApagarPorIdValido {
+
+        @Test
+        void dadoIdExistente_quandoApagarPorId_entaoRetornarSucesso() {
+            var response = cursoController.apagarPorId(cursoEntity.getId());
+            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("ApagarPorIdInvalido")
+    class ApagarPorIdInvalido {
+
+        @Test
+        void dadoIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(CursoNotFoundCustomException.class, () -> cursoController.apagarPorId(idInexistente));
         }
     }
 }
