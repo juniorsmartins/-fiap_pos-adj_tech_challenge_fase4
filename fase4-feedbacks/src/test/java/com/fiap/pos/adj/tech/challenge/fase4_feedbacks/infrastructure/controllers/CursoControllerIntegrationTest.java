@@ -66,6 +66,34 @@ class CursoControllerIntegrationTest {
     }
 
     @Nested
+    @DisplayName("AtualizarPorIdValido")
+    class AtualizarPorIdValido {
+
+        @Test
+        void dadaRequisicaoValida_quandoAtualizarPorId_entaoRetornarSucesso() {
+            var request = CursoUtil.montarCursoRequest("Domain-Driven Design - DDD");
+            var response = cursoController.atualizarPorId(cursoEntity.getId(), request);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            var body = response.getBody();
+            assertEquals(request.nome(), body.nome());
+        }
+    }
+
+    @Nested
+    @DisplayName("AtualizarPorIdInvalido")
+    class AtualizarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoAtualizarPorId_entaoLancarExcecao() {
+            assertThrows(CursoNotFoundCustomException.class, () -> {
+                var idInexistente = UUID.randomUUID();
+                var requestValido = CursoUtil.montarCursoRequest("Jornada Microsserviços");
+                cursoController.atualizarPorId(idInexistente, requestValido);
+            });
+        }
+    }
+
+    @Nested
     @DisplayName("ApagarPorIdValido")
     class ApagarPorIdValido {
 

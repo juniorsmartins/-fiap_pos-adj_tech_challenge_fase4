@@ -25,11 +25,11 @@ public class EstudanteController {
 
     private final EstudanteCriarInputPort estudanteCriarInputPort;
 
+    private final EstudanteAtualizarInputPort estudanteAtualizarInputPort;
+
     private final EstudanteApagarInputPort estudanteApagarInputPort;
 
     private final EstudanteQueryOutputPort estudanteQueryOutputPort;
-
-    private final EstudanteAtualizarInputPort estudanteAtualizarInputPort;
 
     private final EstudantePresenter estudantePresenter;
 

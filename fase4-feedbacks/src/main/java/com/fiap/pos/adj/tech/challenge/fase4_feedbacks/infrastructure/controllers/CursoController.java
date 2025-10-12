@@ -4,6 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.excep
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.CursoRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoApagarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.CursoQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.CursoPresenter;
@@ -24,6 +25,8 @@ public class CursoController {
 
     private final CursoCriarInputPort cursoCriarInputPort;
 
+    private final CursoAtualizarInputPort cursoAtualizarInputPort;
+
     private final CursoApagarInputPort cursoApagarInputPort;
 
     private final CursoQueryOutputPort cursoQueryOutputPort;
@@ -36,6 +39,15 @@ public class CursoController {
 
         return ResponseEntity
                 .created(URI.create(URI_CURSOS + "/" + response.id()))
+                .body(response);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<CursoResponse> atualizarPorId(@PathVariable(name = "id") final UUID id, @RequestBody @Valid CursoRequest request) {
+        var response = cursoAtualizarInputPort.atualizarPorId(id, request);
+
+        return ResponseEntity
+                .ok()
                 .body(response);
     }
 

@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface EstudanteAtualizarInputPort {
 
-    EstudanteResponse atualizarPorId(UUID id, EstudanteRequest estudanteRequest);
+    EstudanteResponse atualizarPorId(UUID id, EstudanteRequest request);
 }
