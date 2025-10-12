@@ -1,9 +1,11 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.CursoRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoCriarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.CursoQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.CursoPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ public class CursoController {
 
     private final CursoApagarInputPort cursoApagarInputPort;
 
+    private final CursoQueryOutputPort cursoQueryOutputPort;
+
     private final CursoPresenter cursoPresenter;
 
     @PostMapping
@@ -41,5 +45,16 @@ public class CursoController {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<CursoResponse> consultarPorId(@PathVariable(name = "id") final UUID id) {
+        var response = cursoQueryOutputPort.findById(id)
+                .map(cursoPresenter::toResponse)
+                .orElseThrow(() -> new CursoNotFoundCustomException(id));
+
+        return ResponseEntity
+                .ok()
+                .body(response);
     }
 }

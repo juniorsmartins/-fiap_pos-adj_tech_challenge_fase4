@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -71,7 +70,7 @@ class CursoControllerIntegrationTest {
     class ApagarPorIdValido {
 
         @Test
-        void dadoIdExistente_quandoApagarPorId_entaoRetornarSucesso() {
+        void dadaRequisicaoValidaComIdExistente_quandoApagarPorId_entaoRetornarSucesso() {
             var response = cursoController.apagarPorId(cursoEntity.getId());
             assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         }
@@ -82,9 +81,35 @@ class CursoControllerIntegrationTest {
     class ApagarPorIdInvalido {
 
         @Test
-        void dadoIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
-            var idInexistente = UUID.randomUUID();
-            assertThrows(CursoNotFoundCustomException.class, () -> cursoController.apagarPorId(idInexistente));
+        void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
+            assertThrows(CursoNotFoundCustomException.class, () -> {
+                    var idInexistente = UUID.randomUUID();
+                    cursoController.apagarPorId(idInexistente);
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("ConsultarPorIdValido")
+    class ConsultarPorIdValido {
+
+        @Test
+        void dadaRequisicaoValidaComIdExistente_quandoConsultarPorId_entaoRetornarSucesso() {
+            var response = cursoController.consultarPorId(cursoEntity.getId());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("ConsultarPorIdInvalido")
+    class ConsultarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarExcecao() {
+            assertThrows(CursoNotFoundCustomException.class, () -> {
+                var idInexistente = UUID.randomUUID();
+                cursoController.consultarPorId(idInexistente);
+            });
         }
     }
 }
