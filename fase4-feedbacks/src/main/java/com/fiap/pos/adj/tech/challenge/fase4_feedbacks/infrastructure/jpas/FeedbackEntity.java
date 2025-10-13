@@ -27,6 +27,6 @@ public final class FeedbackEntity {
     private CursoEntity curso;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "curso_id", nullable = false)
+    @JoinColumn(name = "estudante_id", nullable = false)
     private EstudanteEntity estudante;
 }

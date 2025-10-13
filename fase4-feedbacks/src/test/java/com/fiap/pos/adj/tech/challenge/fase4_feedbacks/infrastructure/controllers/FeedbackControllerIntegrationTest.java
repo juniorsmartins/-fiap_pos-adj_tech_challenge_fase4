@@ -1,10 +1,23 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.FeedbackEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.CursoRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.FeedbackRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.RoleRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.*;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
@@ -16,4 +29,79 @@ class FeedbackControllerIntegrationTest {
     @Autowired
     private FeedbackRepository feedbackRepository;
 
+    @Autowired
+    private CursoRepository cursoRepository;
+
+    @Autowired
+    private EstudanteRepository estudanteRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    private FeedbackEntity feedbackEntity1;
+
+    private EstudanteEntity estudanteEntity1;
+
+    private CursoEntity cursoEntity2;
+
+    @BeforeEach
+    void setUp() {
+        var papelEntity = PapelUtil.montarRoleEntity(null, RoleEnum.ROLE_ESTUDANTE);
+        roleRepository.save(papelEntity);
+        var usuarioEntity = UsuarioUtil.montarUserEntity(null, "teste99@email.com", "55555", papelEntity);
+        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", usuarioEntity);
+        estudanteRepository.save(estudanteEntity1);
+
+        var cursoEntity1 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");
+        cursoRepository.save(cursoEntity1);
+        cursoEntity2 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");
+        cursoRepository.save(cursoEntity2);
+
+        feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, estudanteEntity1);
+    }
+
+    @AfterEach
+    void tearDown() {
+        feedbackRepository.deleteAll();
+    }
+
+    @Nested
+    @DisplayName("CriarValido")
+    class CriarValido {
+
+        @Test
+        void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
+            var request = FeedbackUtil.montarFeedbackRequest(3, "O professor sempre chega atrasado.", cursoEntity2.getId(), estudanteEntity1.getId());
+            var response = feedbackController.criar(request);
+            Assertions.assertEquals(201, response.getStatusCode());
+            var body = response.getBody();
+            Assertions.assertEquals(request.nota(), body.nota());
+            Assertions.assertEquals(request.comentario(), body.comentario());
+        }
+    }
+
+    @Nested
+    @DisplayName("CriarInvalido")
+    class CriarInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdCursoInexistente_quandoCriar_entaoLancarExcecao() {
+            assertThrows(CursoNotFoundCustomException.class, () -> {
+                var idInexistente = UUID.randomUUID();
+                var request = FeedbackUtil
+                        .montarFeedbackRequest(2, "O professor não domina o conteúdo.", idInexistente, estudanteEntity1.getId());
+                feedbackController.criar(request);
+            });
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdEstudanteInexistente_quandoCriar_entaoLancarExcecao() {
+            assertThrows(CursoNotFoundCustomException.class, () -> {
+                var idInexistente = UUID.randomUUID();
+                var request = FeedbackUtil
+                        .montarFeedbackRequest(2, "O professor não domina o conteúdo.", cursoEntity2.getId(), idInexistente);
+                feedbackController.criar(request);
+            });
+        }
+    }
 }
