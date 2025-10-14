@@ -91,6 +91,17 @@ class CursoControllerIntegrationTest {
                 cursoController.atualizarPorId(idInexistente, requestValido);
             });
         }
+
+        @Test
+        void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarExcecao() {
+            var request = CursoUtil.montarCursoRequest("Administração de Banco de Dados I");
+            var response = cursoController.criar(request);
+
+            assertThrows(NomeDuplicatedCustomException.class, () -> {
+                var requestValido = CursoUtil.montarCursoRequest(NOME_PADRAO);
+                cursoController.atualizarPorId(response.getBody().id(), requestValido);
+            });
+        }
     }
 
     @Nested

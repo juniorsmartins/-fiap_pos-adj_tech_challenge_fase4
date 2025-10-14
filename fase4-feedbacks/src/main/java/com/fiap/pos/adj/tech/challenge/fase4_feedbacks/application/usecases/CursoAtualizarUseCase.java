@@ -5,6 +5,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.CursoAtualizarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Curso;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.validations.CursoValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,12 @@ public class CursoAtualizarUseCase implements CursoAtualizarInputPort {
 
     private final CursoAtualizarOutputPort cursoAtualizarOutputPort;
 
+    private final CursoValidation cursoValidation;
+
     @Override
     public CursoResponse atualizarPorId(UUID id, CursoRequest request) {
+
+        cursoValidation.checkDuplicateNome(id, request.nome());
 
         var curso = new Curso(id, request.nome());
         return cursoAtualizarOutputPort.atualizar(curso);

@@ -21,6 +21,7 @@ public class CursoCriarUseCase implements CursoCriarInputPort {
     public CursoResponse criar(CursoRequest request) {
 
         cursoValidation.checkDuplicateNome(null, request.nome());
+
         var curso = new Curso(null, request.nome());
         return cursoSaveOutputPort.save(curso);
     }
