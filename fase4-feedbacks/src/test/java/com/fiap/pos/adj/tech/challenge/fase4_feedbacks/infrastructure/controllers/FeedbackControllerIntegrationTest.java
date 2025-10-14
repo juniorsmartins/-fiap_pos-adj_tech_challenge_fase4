@@ -111,6 +111,29 @@ class FeedbackControllerIntegrationTest {
     }
 
     @Nested
+    @DisplayName("ApagarPorIdValido")
+    class ApagarPorIdValido {
+
+        @Test
+        void dadaRequisicaoValida_quandoApagarPorId_entaoRetornarSucesso() {
+            var response = feedbackController.apagarPorId(feedbackEntity1.getId());
+            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("ApagarPorIdInvalido")
+    class ApagarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
+            assertThrows(FeedbackNotFoundCustomException.class, () -> {
+                feedbackController.apagarPorId(UUID.randomUUID());
+            });
+        }
+    }
+
+    @Nested
     @DisplayName("ConsultarPorIdValido")
     class ConsultarPorIdValido {
 

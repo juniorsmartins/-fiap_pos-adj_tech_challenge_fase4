@@ -4,6 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.excep
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.FeedbackRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.FeedbackResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackCriarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.FeedbackQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.FeedbackPresenter;
 import jakarta.validation.Valid;
@@ -23,6 +24,8 @@ public class FeedbackController {
 
     private final FeedbackCriarInputPort feedbackCriarInputPort;
 
+    private final FeedbackApagarInputPort feedbackApagarInputPort;
+
     private final FeedbackQueryOutputPort feedbackQueryOutputPort;
 
     private final FeedbackPresenter feedbackPresenter;
@@ -34,6 +37,14 @@ public class FeedbackController {
         return ResponseEntity
                 .created(URI.create(URI_FEEDBACKS + "/" + response.id()))
                 .body(response);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> apagarPorId(@PathVariable(name = "id") final UUID id) {
+        feedbackApagarInputPort.apagarPorId(id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @GetMapping(path = {"/{id}"})
