@@ -1,9 +1,10 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.FeedbackRequest;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.FeedbackResponse;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackCriarInputPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

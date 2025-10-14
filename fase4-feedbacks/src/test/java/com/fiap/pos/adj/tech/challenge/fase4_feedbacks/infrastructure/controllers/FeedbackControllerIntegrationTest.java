@@ -1,6 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
@@ -13,6 +14,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -54,7 +56,7 @@ class FeedbackControllerIntegrationTest {
 
         var cursoEntity1 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");
         cursoRepository.save(cursoEntity1);
-        cursoEntity2 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");
+        cursoEntity2 = CursoUtil.montarCursoEntity(null, "Arquitetura de Software em Java");
         cursoRepository.save(cursoEntity2);
 
         feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, estudanteEntity1);
@@ -73,7 +75,7 @@ class FeedbackControllerIntegrationTest {
         void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
             var request = FeedbackUtil.montarFeedbackRequest(3, "O professor sempre chega atrasado.", cursoEntity2.getId(), estudanteEntity1.getId());
             var response = feedbackController.criar(request);
-            Assertions.assertEquals(201, response.getStatusCode());
+            Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
             var body = response.getBody();
             Assertions.assertEquals(request.nota(), body.nota());
             Assertions.assertEquals(request.comentario(), body.comentario());
@@ -96,7 +98,7 @@ class FeedbackControllerIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdEstudanteInexistente_quandoCriar_entaoLancarExcecao() {
-            assertThrows(CursoNotFoundCustomException.class, () -> {
+            assertThrows(EstudanteNotFoundCustomException.class, () -> {
                 var idInexistente = UUID.randomUUID();
                 var request = FeedbackUtil
                         .montarFeedbackRequest(2, "O professor não domina o conteúdo.", cursoEntity2.getId(), idInexistente);
