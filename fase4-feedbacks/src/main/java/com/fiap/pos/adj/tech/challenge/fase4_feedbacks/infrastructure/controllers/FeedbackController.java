@@ -1,17 +1,18 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.FeedbackNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.request.FeedbackRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.FeedbackResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackCriarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.FeedbackQueryOutputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.FeedbackPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = {FeedbackController.URI_FEEDBACKS})
@@ -22,12 +23,27 @@ public class FeedbackController {
 
     private final FeedbackCriarInputPort feedbackCriarInputPort;
 
+    private final FeedbackQueryOutputPort feedbackQueryOutputPort;
+
+    private final FeedbackPresenter feedbackPresenter;
+
     @PostMapping
     public ResponseEntity<FeedbackResponse> criar(@RequestBody @Valid FeedbackRequest request) {
         var response = feedbackCriarInputPort.criar(request);
 
         return ResponseEntity
                 .created(URI.create(URI_FEEDBACKS + "/" + response.id()))
+                .body(response);
+    }
+
+    @GetMapping(path = {"/{id}"})
+    public ResponseEntity<FeedbackResponse> consultarPorId(@PathVariable(name = "id") final UUID id) {
+        var response = feedbackQueryOutputPort.consultarPorId(id)
+                .map(feedbackPresenter::toResponse)
+                .orElseThrow(() -> new FeedbackNotFoundCustomException(id));
+
+        return ResponseEntity
+                .ok()
                 .body(response);
     }
 }

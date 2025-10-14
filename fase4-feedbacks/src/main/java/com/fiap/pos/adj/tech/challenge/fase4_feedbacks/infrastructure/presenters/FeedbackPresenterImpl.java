@@ -27,4 +27,18 @@ public class FeedbackPresenterImpl implements FeedbackPresenter {
         var estudanteResponse = estudantePresenter.toResponse(entity.getEstudante());
         return new FeedbackResponse(entity.getId(), entity.getNota(), entity.getComentario(), cursoResponse, estudanteResponse);
     }
+
+    @Override
+    public FeedbackResponse toResponse(Feedback feedback) {
+        var cursoResponse = cursoPresenter.toResponse(feedback.getCurso());
+        var estudanteResponse = estudantePresenter.toResponse(feedback.getEstudante());
+        return new FeedbackResponse(feedback.getId(), feedback.getNota(), feedback.getComentario(), cursoResponse, estudanteResponse);
+    }
+
+    @Override
+    public Feedback toFeedback(FeedbackEntity entity) {
+        var curso = cursoPresenter.toCurso(entity.getCurso());
+        var estudante = estudantePresenter.toEstudante(entity.getEstudante());
+        return new Feedback(entity.getId(), entity.getNota(), entity.getComentario(), curso, estudante);
+    }
 }

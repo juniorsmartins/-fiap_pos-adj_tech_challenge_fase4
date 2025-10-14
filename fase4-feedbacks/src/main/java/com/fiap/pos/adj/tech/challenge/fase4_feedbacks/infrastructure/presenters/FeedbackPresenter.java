@@ -9,4 +9,8 @@ public interface FeedbackPresenter {
     FeedbackEntity toEntity(Feedback feedback);
 
     FeedbackResponse toResponse(FeedbackEntity entity);
+
+    FeedbackResponse toResponse(Feedback feedback);
+
+    Feedback toFeedback(FeedbackEntity entity);
 }

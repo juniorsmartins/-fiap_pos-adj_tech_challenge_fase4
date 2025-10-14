@@ -2,6 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controlle
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.FeedbackNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -60,6 +62,7 @@ class FeedbackControllerIntegrationTest {
         cursoRepository.save(cursoEntity2);
 
         feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, estudanteEntity1);
+        feedbackRepository.save(feedbackEntity1);
     }
 
     @AfterEach
@@ -75,10 +78,10 @@ class FeedbackControllerIntegrationTest {
         void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
             var request = FeedbackUtil.montarFeedbackRequest(3, "O professor sempre chega atrasado.", cursoEntity2.getId(), estudanteEntity1.getId());
             var response = feedbackController.criar(request);
-            Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+            assertEquals(HttpStatus.CREATED, response.getStatusCode());
             var body = response.getBody();
-            Assertions.assertEquals(request.nota(), body.nota());
-            Assertions.assertEquals(request.comentario(), body.comentario());
+            assertEquals(request.nota(), body.nota());
+            assertEquals(request.comentario(), body.comentario());
         }
     }
 
@@ -103,6 +106,36 @@ class FeedbackControllerIntegrationTest {
                 var request = FeedbackUtil
                         .montarFeedbackRequest(2, "O professor não domina o conteúdo.", cursoEntity2.getId(), idInexistente);
                 feedbackController.criar(request);
+            });
+        }
+    }
+
+    @Nested
+    @DisplayName("ConsultarPorIdValido")
+    class ConsultarPorIdValido {
+
+        @Test
+        void dadaRequisicaoValida_quandoConsultarPorId_entaoRetornarSucesso() {
+            var response = feedbackController.consultarPorId(feedbackEntity1.getId());
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            var body = response.getBody();
+            assertEquals(feedbackEntity1.getId(), body.id());
+            assertEquals(feedbackEntity1.getNota(), body.nota());
+            assertEquals(feedbackEntity1.getComentario(), body.comentario());
+            assertEquals(feedbackEntity1.getCurso().getId(), body.curso().id());
+            assertEquals(feedbackEntity1.getEstudante().getId(), body.estudante().id());
+        }
+    }
+
+    @Nested
+    @DisplayName("ConsultarPorIdInvalido")
+    class ConsultarPorIdInvalido {
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarExcecao() {
+            assertThrows(FeedbackNotFoundCustomException.class, () -> {
+                var idInexistente = UUID.randomUUID();
+                feedbackController.consultarPorId(idInexistente);
             });
         }
     }
