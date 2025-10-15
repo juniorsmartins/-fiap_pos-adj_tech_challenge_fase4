@@ -1,5 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters;
 
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.EstudanteKafka;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.EstudanteResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.EstudanteEntity;
@@ -34,5 +35,10 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
     public Estudante toEstudante(EstudanteEntity entity) {
         var usuario = usuarioPresenter.toUsuario(entity.getUser());
         return new Estudante(entity.getId(), entity.getNome(), usuario);
+    }
+
+    @Override
+    public EstudanteKafka toKafka(EstudanteResponse response) {
+        return new EstudanteKafka(response.id());
     }
 }

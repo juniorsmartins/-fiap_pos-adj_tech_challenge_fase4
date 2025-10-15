@@ -6,6 +6,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.EstudanteEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.EstudanteRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.RoleRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_users.utils.BaseIntegrationTest;
 import com.fiap.pos.adj.tech.challenge.fase4_users.utils.EstudanteUtil;
 import com.fiap.pos.adj.tech.challenge.fase4_users.utils.PapelUtil;
 import com.fiap.pos.adj.tech.challenge.fase4_users.utils.UsuarioUtil;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class EstudanteControllerIntegrationTest {
+class EstudanteControllerIntegrationTest extends BaseIntegrationTest {
 
     private static final String EMAIL_TESTE = "teste@email.com";
 

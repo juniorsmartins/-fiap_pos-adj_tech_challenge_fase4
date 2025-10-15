@@ -40,4 +40,11 @@ spring:
     open-in-view: false #  Define se o Hibernate deve manter a sessao aberta durante a renderizacao da view. O false e recomendado para evitar problemas de performance e lazy loading.
     show-sql: true # Habilita a exibicao do SQL gerado no console.
 
+  kafka:
+    bootstrap-servers: kafka:9092
+    topic:
+      event-create-users: event-create-users
+    consumer:
+      group-id: group-id-api-users
+      auto-offset-reset: earliest
 

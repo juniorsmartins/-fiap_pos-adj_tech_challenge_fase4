@@ -7,6 +7,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.Estud
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteQueryOutputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.KafkaProducer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.EstudantePresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,14 @@ public class EstudanteController {
 
     private final EstudantePresenter estudantePresenter;
 
+    private final KafkaProducer kafkaProducer;
+
     @PostMapping
     public ResponseEntity<EstudanteResponse> criar(@RequestBody @Valid EstudanteRequest request) {
         var estudante = estudanteCriarInputPort.criar(request);
         var response = estudantePresenter.toResponse(estudante);
+
+        kafkaProducer.enviarEventoUsers(estudantePresenter.toKafka(response));
 
         return ResponseEntity
                 .created(URI.create(URI_ESTUDANTES + "/" + response.id()))

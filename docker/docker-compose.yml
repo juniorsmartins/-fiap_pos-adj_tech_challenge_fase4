@@ -1,43 +1,117 @@
 volumes:
-  db_feedbacks:
-    name: db_feedbacks
+  kafka-data:
+    name: kafka-data
+  db_users:
+    name: db_users
+#  db_feedbacks:
+#    name: db_feedbacks
 
 networks:
   communication:
     name: communication
+    driver: bridge
 
 services:
 
-  api_feedbacks:
-    container_name: api_feedbacks
-    image: juniorsmartins/api_feedbacks:v0.0.1
+  kafka:
+    image: lensesio/fast-data-dev:3.9
+    container_name: kafka
+    hostname: kafka
+    ports:
+      - 2181:2181              # ZooKeeper
+      - 3030:3030              # Landoop UI
+      - 8081-8081              # Schema Registry
+      - 8082-8082              # Kafka Rest Proxy
+      - 8083-8083              # Kafka Connect
+      - 9092:9092              # Kafka Broker
+      - 9581-9585:9581-9585    # JMX Ports
+      - 19092-19092            # For internal Docker access
+    environment:
+      ADV_HOST: kafka          # Define o endereço de host (127.0.0.1 - localhost) - precisará ajustar isso para o IP do host ou o nome do serviço na rede Docker. Define o hostname anunciado pelo Kafka para conexões externas.
+      RUNTESTS: 0              # Desativa testes iniciais para iniciar mais rápido
+      SAMPLEDATA: 0            # Desativa dados de exemplo
+      FORWARDLOGS: 0           # Desativa forwarding de logs
+      DEBUG: 0                 # Desabilita modo debug
+      CONNECT_HEAP: 256m       # Aloca heap para o Kafka Connect
+      DISABLE: azure-documentdb,blockchain,bloomberg,cassandra,coap,druid,elastic,elastic5,ftp,hazelcast,hbase,influxdb,jms,kudu,mongodb,mqtt,redis,rethink,voltdb,yahoo,hdfs,jdbc,elasticsearch,s3,twitter,debezium-mongodb,debezium-mysql,debezium-postgres,debezium-sqlserver,debezium-jdbc
+    volumes: # opcional se quiser persistir dados
+      - kafka-data:/data
+    networks:
+      - communication
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    ports:
+      - 9000:9000  # Acesse em http://localhost:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+    networks:
+      - communication
+    depends_on:
+      kafka:
+        condition: service_started
+
+  api_users:
+    container_name: api_users
+    image: juniorsmartins/api_users:v0.0.1
     build:
-      context: ../fase4-feedbacks
+      context: ../fase4-users
       dockerfile: Dockerfile
       args:
-        APP_NAME: "api_feedbacks"
+        APP_NAME: "api_users"
         APP_VERSION: "v0.0.1"
-        APP_DESCRIPTION: "API de Feedbacks para sistema educacional."
+        APP_DESCRIPTION: "API de Usuários para sistema educacional."
     ports:
-      - "9050:9050"
+      - "9040:9040"
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 256M
     environment:
-      - DB_HOST=database_feedbacks
-      - DB_NAME=db_feedbacks
+      - DB_HOST=database_users
+      - DB_NAME=db_users
       - DB_PORT=5432
     restart: on-failure
     networks:
       - communication
     depends_on:
-      database_feedbacks:
+      database_users:
+        condition: service_started
+      kafka:
         condition: service_started
 
-  database_feedbacks:
-    container_name: database_feedbacks
+#  api_feedbacks:
+#    container_name: api_feedbacks
+#    image: juniorsmartins/api_feedbacks:v0.0.1
+#    build:
+#      context: ../fase4-feedbacks
+#      dockerfile: Dockerfile
+#      args:
+#        APP_NAME: "api_feedbacks"
+#        APP_VERSION: "v0.0.1"
+#        APP_DESCRIPTION: "API de Feedbacks para sistema educacional."
+#    ports:
+#      - "9050:9050"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '1.0'
+#          memory: 256M
+#    environment:
+#      - DB_HOST=database_feedbacks
+#      - DB_NAME=db_feedbacks
+#      - DB_PORT=5432
+#    restart: on-failure
+#    networks:
+#      - communication
+#    depends_on:
+#      database_feedbacks:
+#        condition: service_started
+
+  database_users:
+    container_name: database_users
     image: postgres:17.0
     ports:
       - "5501:5432"
@@ -48,10 +122,30 @@ services:
           memory: 256M
     restart: always
     environment:
-      POSTGRES_DB: db_feedbacks
+      POSTGRES_DB: db_users
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - db_feedbacks:/var/lib/postgresql/data
+      - db_users:/var/lib/postgresql/data
     networks:
       - communication
+
+#  database_feedbacks:
+#    container_name: database_feedbacks
+#    image: postgres:17.0
+#    ports:
+#      - "5501:5432"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.5'
+#          memory: 256M
+#    restart: always
+#    environment:
+#      POSTGRES_DB: db_feedbacks
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    volumes:
+#      - db_feedbacks:/var/lib/postgresql/data
+#    networks:
+#      - communication
