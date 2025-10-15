@@ -39,6 +39,6 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
 
     @Override
     public EstudanteKafka toKafka(EstudanteResponse response) {
-        return new EstudanteKafka(response.id());
+        return new EstudanteKafka(response.id(), response.nome(), response.usuario().email());
     }
 }

@@ -4,6 +4,10 @@ import java.util.UUID;
 
 public record EstudanteKafka(
 
-        UUID id
+        UUID id,
+
+        String nome,
+
+        String email
 ) {
 }
