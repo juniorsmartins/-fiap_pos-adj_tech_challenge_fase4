@@ -1,0 +1,38 @@
+package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters;
+
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.UsuarioResponse;
+import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Usuario;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.UserEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class UsuarioPresenterImpl implements UsuarioPresenter {
+
+    private final RolePresenter rolePresenter;
+
+    @Override
+    public UsuarioResponse toResponse(Usuario usuario) {
+        var roleResponse = rolePresenter.toResponse(usuario.getRole());
+        return new UsuarioResponse(usuario.getId(), usuario.getEmail(), usuario.getPassword(), roleResponse);
+    }
+
+    @Override
+    public UsuarioResponse toResponse(UserEntity user) {
+        var roleResponse = rolePresenter.toResponse(user.getRole());
+        return new UsuarioResponse(user.getId(), user.getEmail(), user.getPassword(), roleResponse);
+    }
+
+    @Override
+    public UserEntity toEntity(Usuario usuario) {
+        var roleEntity = rolePresenter.toEntity(usuario.getRole());
+        return new UserEntity(usuario.getId(), usuario.getEmail(), usuario.getPassword(), roleEntity);
+    }
+
+    @Override
+    public Usuario toUsuario(UserEntity entity) {
+        var papel = rolePresenter.toPapel(entity.getRole());
+        return new Usuario(entity.getId(), entity.getEmail(), entity.getPassword(), papel);
+    }
+}
