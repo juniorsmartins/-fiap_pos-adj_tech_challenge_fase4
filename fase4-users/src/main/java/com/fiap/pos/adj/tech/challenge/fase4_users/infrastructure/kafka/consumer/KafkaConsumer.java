@@ -2,6 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.consume
 
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.EstudanteKafka;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public final class KafkaConsumer {
 
     @KafkaListener(topics = "${spring.kafka.topic.event-create-users}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
-    public void consumirEventoUsers(EstudanteKafka estudanteKafka, Acknowledgment ack) {
+    public void consumirEventoUsers(ConsumerRecord<String, EstudanteKafka> estudanteKafka, Acknowledgment ack) {
 
         try {
             log.info("\n\n consumirEventoUser - Mensagem recebida no tópico de eventos: {}. \n\n", estudanteKafka);
