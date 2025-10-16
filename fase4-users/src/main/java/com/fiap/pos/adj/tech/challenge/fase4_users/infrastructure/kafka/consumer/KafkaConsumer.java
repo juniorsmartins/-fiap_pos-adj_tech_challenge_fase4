@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public final class KafkaConsumer {
 
     @KafkaListener(topics = "${spring.kafka.topic.event-create-users}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
-    public void consumirEventoUsers(ConsumerRecord<String, EstudanteKafka> estudanteKafka, Acknowledgment ack) {
+    public void consumirEventoUsers(final ConsumerRecord<String, EstudanteKafka> estudanteKafka, Acknowledgment ack) {
 
         try {
             log.info("\n\n consumirEventoUser - Mensagem recebida no tópico de eventos: {}. \n\n", estudanteKafka);

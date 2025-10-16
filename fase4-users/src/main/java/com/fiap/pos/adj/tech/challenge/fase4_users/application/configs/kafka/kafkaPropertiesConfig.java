@@ -10,15 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class kafkaPropertiesConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    public String bootstrapServers;
-
-    @Value("${spring.kafka.consumer.group-id}")
-    public String consumerGroupId;
-
-    @Value("${spring.kafka.consumer.auto-offset-reset}")
-    public String consumerAutoOffsetReset;
-
     @Value("${spring.kafka.topic.event-create-users}")
     public String topicEventCreateUsers;
 }

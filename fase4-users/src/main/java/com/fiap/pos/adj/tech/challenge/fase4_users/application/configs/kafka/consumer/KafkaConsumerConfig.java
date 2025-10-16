@@ -1,9 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.kafka.consumer;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.kafka.kafkaPropertiesConfig;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -20,18 +18,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaConsumerConfig {
 
-    private final kafkaPropertiesConfig kafkaPropertiesConfig;
+    private final KafkaProperties kafkaProperties;
 
     @Bean
     public Map<String, Object> consumerConfigs() {
-        return Map.of(
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaPropertiesConfig.bootstrapServers,
-                ConsumerConfig.GROUP_ID_CONFIG, kafkaPropertiesConfig.consumerGroupId,
-                ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class,
-                ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class,
-                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaPropertiesConfig.consumerAutoOffsetReset,
-                JsonDeserializer.TRUSTED_PACKAGES, "*"
-        );
+        Map<String, Object> properties = kafkaProperties.buildConsumerProperties();
+        properties.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        return properties;
     }
 
     @Bean
