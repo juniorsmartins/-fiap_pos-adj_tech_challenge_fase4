@@ -1,0 +1,13 @@
+package com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output;
+
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.entities.Curso;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface CursoQueryOutputPort {
+
+    Optional<Curso> findByNome(String nome);
+
+    Optional<Curso> findById(UUID id);
+}
