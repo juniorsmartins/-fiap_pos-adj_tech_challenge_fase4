@@ -1,4 +1,4 @@
-package com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.kafka.producer;
+package com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.kafka.producer;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerConfig;

@@ -4,6 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptio
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http409.NomeDuplicatedCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.repositories.CursoRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.BaseIntegrationTest;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.CursoUtil;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class CursoControllerIntegrationTest {
+class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
     private static final String NOME_PADRAO = "Tecnologia Java";
 
