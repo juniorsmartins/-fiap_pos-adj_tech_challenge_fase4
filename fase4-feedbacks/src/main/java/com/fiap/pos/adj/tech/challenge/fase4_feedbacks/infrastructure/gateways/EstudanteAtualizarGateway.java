@@ -1,9 +1,8 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.gateways;
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.EstudanteResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.EstudanteAtualizarOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Estudante;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.EstudanteKafka;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.EstudantePresenter;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +19,15 @@ public class EstudanteAtualizarGateway implements EstudanteAtualizarOutputPort {
 
     @Transactional
     @Override
-    public EstudanteResponse atualizar(Estudante estudante) {
+    public void atualizar(EstudanteKafka kafka) {
 
-        return estudanteRepository.findById(estudante.getId())
+        estudanteRepository.findById(kafka.id())
                 .map(entity -> {
-                    entity.setNome(estudante.getNome());
-                    entity.getUser().setEmail(estudante.getUser().getEmail());
-                    entity.getUser().setPassword(estudante.getUser().getPassword());
+                    entity.setNome(kafka.nome());
+                    entity.setEmail(kafka.email());
                     return entity;
                 })
                 .map(estudanteRepository::save)
-                .map(estudantePresenter::toResponse)
-                .orElseThrow(() -> new EstudanteNotFoundCustomException(estudante.getId()));
+                .orElseThrow(() -> new EstudanteNotFoundCustomException(kafka.id()));
     }
 }

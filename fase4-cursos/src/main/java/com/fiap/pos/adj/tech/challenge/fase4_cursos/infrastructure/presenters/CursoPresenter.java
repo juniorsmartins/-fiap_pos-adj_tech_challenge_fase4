@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.presenters;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.entities.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.CursoKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.CursoKafka;
 
 public interface CursoPresenter {
 

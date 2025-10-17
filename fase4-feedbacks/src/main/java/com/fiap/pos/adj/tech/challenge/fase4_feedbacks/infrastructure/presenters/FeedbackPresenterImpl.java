@@ -3,6 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.FeedbackResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Feedback;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.FeedbackEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.FeedbackKafka;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +39,12 @@ public class FeedbackPresenterImpl implements FeedbackPresenter {
     @Override
     public Feedback toFeedback(FeedbackEntity entity) {
         var curso = cursoPresenter.toCurso(entity.getCurso());
-        var estudante = estudantePresenter.toEstudante(entity.getEstudante());
+        var estudante = estudantePresenter.toModel(entity.getEstudante());
         return new Feedback(entity.getId(), entity.getNota(), entity.getComentario(), curso, estudante);
+    }
+
+    @Override
+    public FeedbackKafka toKafka(FeedbackResponse response) {
+        return new FeedbackKafka(response.id(), response.nota(), response.comentario(), response.curso().nome(), response.estudante().nome());
     }
 }

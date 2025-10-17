@@ -7,6 +7,6 @@ public record EstudanteResponse(
 
         String nome,
 
-        UsuarioResponse usuario
+        String email
 ) {
 }

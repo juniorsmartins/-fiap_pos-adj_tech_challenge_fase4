@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.consumer;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.EstudanteKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.EstudanteKafka;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,11 +15,11 @@ public final class KafkaConsumer {
     public void consumirEventoUsers(final ConsumerRecord<String, EstudanteKafka> estudanteKafka, Acknowledgment ack) {
 
         try {
-            log.info("\n\n consumirEventoUser - Mensagem recebida no tópico de eventos: {}. \n\n", estudanteKafka);
+            log.info("\n\n API-USERS consumirEventoUsers - Mensagem recebida no tópico de eventos: {}. \n\n", estudanteKafka);
             ack.acknowledge(); // Confirmar o processamento da mensagem
 
         } catch (Exception e) {
-            log.error("\n\n consumirEventoUser - Erro ao processar a mensagem: {}.\n\n", e.getMessage());
+            log.error("\n\n API-USERS consumirEventoUsers - Erro ao processar a mensagem: {}.\n\n", e.getMessage());
         }
     }
 }

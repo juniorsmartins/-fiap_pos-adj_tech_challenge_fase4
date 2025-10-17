@@ -20,7 +20,6 @@ public final class EstudanteEntity {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, optional = false, orphanRemoval = true)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private UserEntity user;
+    @Column(name = "email", nullable = false)
+    private String email;
 }

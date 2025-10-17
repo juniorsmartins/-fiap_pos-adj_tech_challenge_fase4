@@ -1,4 +1,4 @@
-package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka;
+package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer;
 
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.kafka.kafkaPropertiesConfig;
 import lombok.RequiredArgsConstructor;

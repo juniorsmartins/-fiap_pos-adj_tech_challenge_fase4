@@ -1,4 +1,4 @@
-package com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response;
+package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer;
 
 import java.util.UUID;
 

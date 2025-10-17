@@ -7,7 +7,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.Curs
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output.CursoQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.KafkaProducer;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.KafkaProducer;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.presenters.CursoPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

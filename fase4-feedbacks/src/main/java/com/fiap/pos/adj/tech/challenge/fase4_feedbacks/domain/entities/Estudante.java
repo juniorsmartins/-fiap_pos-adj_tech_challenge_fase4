@@ -11,11 +11,11 @@ public final class Estudante {
 
     private final String nome;
 
-    private final Usuario user;
+    private final String email;
 
-    public Estudante(UUID id, String nome, Usuario user) {
+    public Estudante(UUID id, String nome, String email) {
         this.id = id;
         this.nome = nome;
-        this.user = user;
+        this.email = email;
     }
 }

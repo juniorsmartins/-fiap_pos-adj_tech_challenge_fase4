@@ -3,14 +3,12 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.controlle
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.FeedbackNotFoundCustomException;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.FeedbackEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.FeedbackRepository;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.RoleRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.utils.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class FeedbackControllerIntegrationTest {
+class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
     @Autowired
     private FeedbackController feedbackController;
@@ -39,9 +37,6 @@ class FeedbackControllerIntegrationTest {
     @Autowired
     private EstudanteRepository estudanteRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     private FeedbackEntity feedbackEntity1;
 
     private EstudanteEntity estudanteEntity1;
@@ -50,10 +45,7 @@ class FeedbackControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        var papelEntity = PapelUtil.montarRoleEntity(null, RoleEnum.ROLE_ESTUDANTE);
-        roleRepository.save(papelEntity);
-        var usuarioEntity = UsuarioUtil.montarUserEntity(null, "teste99@email.com", "55555", papelEntity);
-        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", usuarioEntity);
+        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", "teste99@email.com");
         estudanteRepository.save(estudanteEntity1);
 
         var cursoEntity1 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");

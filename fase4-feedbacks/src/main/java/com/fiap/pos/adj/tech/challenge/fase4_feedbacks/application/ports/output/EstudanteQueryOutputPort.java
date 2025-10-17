@@ -7,7 +7,5 @@ import java.util.UUID;
 
 public interface EstudanteQueryOutputPort {
 
-    Optional<Estudante> findByEmail(String email);
-
     Optional<Estudante> findById(UUID id);
 }
