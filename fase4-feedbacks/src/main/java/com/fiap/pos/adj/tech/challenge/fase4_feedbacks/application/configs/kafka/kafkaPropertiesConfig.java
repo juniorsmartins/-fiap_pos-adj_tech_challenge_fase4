@@ -16,6 +16,6 @@ public class kafkaPropertiesConfig {
     @Value("${spring.kafka.topic.event-create-users}")
     public String topicEventCreateUsers;
 
-    @Value("${spring.kafka.topic.event-update-users}")
-    public String topicEventUpdateUsers;
+    @Value("${spring.kafka.topic.event-create-cursos}")
+    public String topicEventCreateCursos;
 }

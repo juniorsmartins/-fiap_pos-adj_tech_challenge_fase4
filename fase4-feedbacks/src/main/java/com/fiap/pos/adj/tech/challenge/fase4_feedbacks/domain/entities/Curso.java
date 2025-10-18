@@ -1,18 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities;
 
-import lombok.Getter;
-
 import java.util.UUID;
 
-@Getter
-public final class Curso {
+public record Curso(UUID id) {
 
-    private final UUID id;
-
-    private final String nome;
-
-    public Curso(UUID id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
 }

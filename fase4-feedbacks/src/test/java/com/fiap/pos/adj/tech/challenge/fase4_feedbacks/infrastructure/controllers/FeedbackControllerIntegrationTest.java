@@ -45,13 +45,13 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(null, "Teste Teste", "teste99@email.com");
-        estudanteRepository.save(estudanteEntity1);
+        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(UUID.randomUUID());
+        estudanteRepository.saveAndFlush(estudanteEntity1);
 
-        var cursoEntity1 = CursoUtil.montarCursoEntity(null, "Arquitetura e Desenvolvimento Java");
-        cursoRepository.save(cursoEntity1);
-        cursoEntity2 = CursoUtil.montarCursoEntity(null, "Arquitetura de Software em Java");
-        cursoRepository.save(cursoEntity2);
+        var cursoEntity1 = CursoUtil.montarCursoEntity(UUID.randomUUID());
+        cursoRepository.saveAndFlush(cursoEntity1);
+        cursoEntity2 = CursoUtil.montarCursoEntity(UUID.randomUUID());
+        cursoRepository.saveAndFlush(cursoEntity2);
 
         feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, estudanteEntity1);
         feedbackRepository.save(feedbackEntity1);

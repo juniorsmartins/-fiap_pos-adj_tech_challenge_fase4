@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public final class KafkaConsumer {
+public final class ConsumerUserKafka {
 
-    @KafkaListener(topics = "${spring.kafka.topic.event-create-users}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
-    public void consumirEventoUsers(final ConsumerRecord<String, EstudanteKafka> estudanteKafka, Acknowledgment ack) {
+    @KafkaListener(topics = "${spring.kafka.topic.event-create-users}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "estudanteKafkaListenerContainerFactory")
+    public void consumirEventoUsers(final ConsumerRecord<String, EstudanteKafka> kafka, Acknowledgment ack) {
 
         try {
-            log.info("\n\n API-USERS consumirEventoUsers - Mensagem recebida no tópico de eventos: {}. \n\n", estudanteKafka);
+            log.info("\n\n API-USERS consumirEventoUsers - Mensagem recebida no tópico de eventos: {}. \n\n", kafka);
             ack.acknowledge(); // Confirmar o processamento da mensagem
 
         } catch (Exception e) {

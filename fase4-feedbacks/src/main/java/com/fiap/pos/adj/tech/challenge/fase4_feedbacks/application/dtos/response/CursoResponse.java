@@ -2,5 +2,5 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.respons
 
 import java.util.UUID;
 
-public record CursoResponse(UUID id, String nome) {
+public record CursoResponse(UUID id) {
 }

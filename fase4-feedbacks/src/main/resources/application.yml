@@ -45,8 +45,10 @@ spring:
     topic:
       event-create-feedbacks: event-create-feedbacks
       event-create-users: event-create-users
-      event-update-users: event-update-users
+      event-create-cursos: event-create-cursos
     consumer:
       group-id: group-id-api-feedbacks
       auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
 

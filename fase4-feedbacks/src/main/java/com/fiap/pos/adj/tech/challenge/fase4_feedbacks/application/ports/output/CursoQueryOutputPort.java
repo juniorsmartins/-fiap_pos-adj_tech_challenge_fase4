@@ -7,7 +7,5 @@ import java.util.UUID;
 
 public interface CursoQueryOutputPort {
 
-    Optional<Curso> findByNome(String nome);
-
     Optional<Curso> findById(UUID id);
 }

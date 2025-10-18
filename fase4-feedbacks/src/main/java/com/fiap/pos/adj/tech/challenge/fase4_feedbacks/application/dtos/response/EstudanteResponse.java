@@ -3,10 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.respons
 import java.util.UUID;
 
 public record EstudanteResponse(
-        UUID id,
 
-        String nome,
-
-        String email
+        UUID id
 ) {
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public final class EstudanteUtil {
 
-    public static EstudanteEntity montarEstudanteEntity(UUID id, String nome, String email) {
-        return new EstudanteEntity(id, nome, email);
+    public static EstudanteEntity montarEstudanteEntity(UUID id) {
+        return new EstudanteEntity(id);
     }
 }

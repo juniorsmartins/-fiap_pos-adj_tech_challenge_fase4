@@ -14,9 +14,5 @@ import java.util.UUID;
 public final class CursoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(name = "nome", nullable = false, unique = true)
-    private String nome;
 }

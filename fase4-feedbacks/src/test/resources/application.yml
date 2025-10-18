@@ -23,7 +23,7 @@ spring:
     topic:
       event-create-feedbacks: event-create-feedbacks-test
       event-create-users: event-create-users-test
-      event-update-users: event-update-users-test
+      event-create-cursos: event-create-cursos-test
     consumer:
       group-id: group-id-api-feedbacks-test
       auto-offset-reset: earliest

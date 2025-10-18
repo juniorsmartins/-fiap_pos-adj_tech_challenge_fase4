@@ -47,4 +47,6 @@ spring:
     consumer:
       group-id: group-id-api-cursos
       auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
 

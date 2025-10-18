@@ -1,9 +1,8 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output;
 
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CursoResponse;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Curso;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CursoKafka;
 
 public interface CursoSaveOutputPort {
 
-    CursoResponse save(Curso curso);
+    void save(CursoKafka kafka);
 }

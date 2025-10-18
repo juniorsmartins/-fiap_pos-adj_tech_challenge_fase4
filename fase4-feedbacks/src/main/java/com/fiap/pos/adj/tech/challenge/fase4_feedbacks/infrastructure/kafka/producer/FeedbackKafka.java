@@ -10,8 +10,8 @@ public record FeedbackKafka(
 
         String comentario,
 
-        String curso,
+        UUID curso,
 
-        String estudante
+        UUID estudante
 ) {
 }

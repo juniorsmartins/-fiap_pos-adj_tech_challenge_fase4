@@ -21,13 +21,6 @@ public class CursoQueryGateway implements CursoQueryOutputPort {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Curso> findByNome(String nome) {
-        return cursoRepository.findByNome(nome)
-                .map(cursoPresenter::toCurso);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public Optional<Curso> findById(UUID id) {
         return cursoRepository.findById(id)
                 .map(cursoPresenter::toCurso);

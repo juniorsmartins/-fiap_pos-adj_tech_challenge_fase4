@@ -13,26 +13,26 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
 
     @Override
     public EstudanteEntity toEntity(EstudanteKafka kafka) {
-        return new EstudanteEntity(kafka.id(), kafka.nome(), kafka.email());
+        return new EstudanteEntity(kafka.id());
     }
 
     @Override
     public EstudanteEntity toEntity(Estudante model) {
-        return new EstudanteEntity(model.getId(), model.getNome(), model.getEmail());
+        return new EstudanteEntity(model.id());
     }
 
     @Override
     public Estudante toModel(EstudanteEntity entity) {
-        return new Estudante(entity.getId(), entity.getNome(), entity.getEmail());
+        return new Estudante(entity.getId());
     }
 
     @Override
     public EstudanteResponse toResponse(Estudante model) {
-        return new EstudanteResponse(model.getId(), model.getNome(), model.getEmail());
+        return new EstudanteResponse(model.id());
     }
 
     @Override
     public EstudanteResponse toResponse(EstudanteEntity entity) {
-        return new EstudanteResponse(entity.getId(), entity.getNome(), entity.getEmail());
+        return new EstudanteResponse(entity.getId());
     }
 }
