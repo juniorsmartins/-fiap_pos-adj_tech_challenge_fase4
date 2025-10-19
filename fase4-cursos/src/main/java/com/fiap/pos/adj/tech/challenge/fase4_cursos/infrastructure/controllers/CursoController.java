@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CursoController {
 
-    public static final String URI_CURSOS = "/api/v1/cursos";
+    public static final String URI_CURSOS = "/v1/cursos";
 
     private final CursoCriarInputPort cursoCriarInputPort;
 
@@ -50,7 +50,6 @@ public class CursoController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<CursoResponse> atualizarPorId(@PathVariable(name = "id") final UUID id, @RequestBody @Valid CursoRequest request) {
         var response = cursoAtualizarInputPort.atualizarPorId(id, request);
-
         return ResponseEntity
                 .ok()
                 .body(response);
@@ -69,7 +68,6 @@ public class CursoController {
         var response = cursoQueryOutputPort.findById(id)
                 .map(cursoPresenter::toResponse)
                 .orElseThrow(() -> new CursoNotFoundCustomException(id));
-
         return ResponseEntity
                 .ok()
                 .body(response);

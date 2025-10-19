@@ -44,9 +44,4 @@ spring:
     bootstrap-servers: kafka:9092
     topic:
       event-create-cursos: event-create-cursos
-    consumer:
-      group-id: group-id-api-cursos
-      auto-offset-reset: earliest
-      properties:
-        spring.json.trusted.packages: "*"
 

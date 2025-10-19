@@ -22,7 +22,5 @@ spring:
     bootstrap-servers: kafka:9092
     topic:
       event-create-cursos: event-create-cursos-test
-    consumer:
-      group-id: group-id-api-cursos-test
-      auto-offset-reset: earliest
+
 

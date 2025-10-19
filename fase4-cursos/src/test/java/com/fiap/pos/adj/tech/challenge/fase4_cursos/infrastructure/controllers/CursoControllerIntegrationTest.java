@@ -6,22 +6,29 @@ import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEnt
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.BaseIntegrationTest;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.CursoUtil;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@Transactional
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
+    private static final String URI_CURSOS = "/v1/cursos";
+
     private static final String NOME_PADRAO = "Tecnologia Java";
+
+    @LocalServerPort
+    private int randomPort;
 
     @Autowired
     private CursoController cursoController;
@@ -33,6 +40,9 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        RestAssured.port = randomPort; // Configura a porta dinâmica
+        RestAssured.basePath = URI_CURSOS;
+
         cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO);
         cursoRepository.save(cursoEntity);
     }
@@ -49,10 +59,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
             var request = CursoUtil.montarCursoRequest("Programação Orientada a Objeto I");
-            var response = cursoController.criar(request);
-            assertEquals(HttpStatus.CREATED, response.getStatusCode());
-            var body = response.getBody();
-            assertEquals(request.nome(), body.nome());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .post()
+                    .then()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .body("nome", Matchers.equalTo(request.nome()));
         }
     }
 
@@ -63,7 +78,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoCriar_entaoLancarExcecao() {
             var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
-            assertThrows(NomeDuplicatedCustomException.class, () -> cursoController.criar(request));
+
+            RestAssured.given()
+                    .contentType(ContentType.JSON)
+                    .body(request)
+                .when()
+                    .post()
+                .then()
+                    .statusCode(HttpStatus.CONFLICT.value())
+                    .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
         }
     }
 
