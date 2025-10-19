@@ -125,8 +125,8 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarExcecao() {
-            var response = cursoController
-                    .criar(CursoUtil.montarCursoRequest("Administração de Banco de Dados I"));
+            var cursoEntity = CursoUtil.montarCursoEntity(null, "Administração de Banco de Dados I");
+            cursoRepository.save(cursoEntity);
 
             var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
 
@@ -134,7 +134,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                         .contentType(ContentType.JSON)
                         .body(request)
                     .when()
-                        .put("/{id}", response.getBody().id())
+                        .put("/{id}", cursoEntity.getId())
                     .then()
                         .statusCode(HttpStatus.CONFLICT.value())
                         .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
