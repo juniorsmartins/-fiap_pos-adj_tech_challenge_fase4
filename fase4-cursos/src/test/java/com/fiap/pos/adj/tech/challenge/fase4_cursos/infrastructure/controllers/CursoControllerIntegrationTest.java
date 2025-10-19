@@ -1,7 +1,5 @@
 package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.controllers;
 
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http404.CursoNotFoundCustomException;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http409.NomeDuplicatedCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.BaseIntegrationTest;
@@ -16,9 +14,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CursoControllerIntegrationTest extends BaseIntegrationTest {
@@ -80,13 +75,13 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
             var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
 
             RestAssured.given()
-                    .contentType(ContentType.JSON)
-                    .body(request)
-                .when()
-                    .post()
-                .then()
-                    .statusCode(HttpStatus.CONFLICT.value())
-                    .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .post()
+                    .then()
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
         }
     }
 
@@ -97,10 +92,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void dadaRequisicaoValida_quandoAtualizarPorId_entaoRetornarSucesso() {
             var request = CursoUtil.montarCursoRequest("Domain-Driven Design - DDD");
-            var response = cursoController.atualizarPorId(cursoEntity.getId(), request);
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            var body = response.getBody();
-            assertEquals(request.nome(), body.nome());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .put("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("nome", Matchers.equalTo(request.nome()));
         }
     }
 
@@ -110,22 +110,34 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoAtualizarPorId_entaoLancarExcecao() {
-            assertThrows(CursoNotFoundCustomException.class, () -> {
-                var idInexistente = UUID.randomUUID();
-                var requestValido = CursoUtil.montarCursoRequest("Jornada Microsserviços");
-                cursoController.atualizarPorId(idInexistente, requestValido);
-            });
+            var idInexistente = UUID.randomUUID();
+            var request = CursoUtil.montarCursoRequest("Test-Driven Development - TDD");
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .put("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Curso não encontrado por id: " + idInexistente + "."));
         }
 
         @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarExcecao() {
-            var request = CursoUtil.montarCursoRequest("Administração de Banco de Dados I");
-            var response = cursoController.criar(request);
+            var response = cursoController
+                    .criar(CursoUtil.montarCursoRequest("Administração de Banco de Dados I"));
 
-            assertThrows(NomeDuplicatedCustomException.class, () -> {
-                var requestValido = CursoUtil.montarCursoRequest(NOME_PADRAO);
-                cursoController.atualizarPorId(response.getBody().id(), requestValido);
-            });
+            var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .put("/{id}", response.getBody().id())
+                    .then()
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
         }
     }
 
@@ -135,8 +147,13 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValidaComIdExistente_quandoApagarPorId_entaoRetornarSucesso() {
-            var response = cursoController.apagarPorId(cursoEntity.getId());
-            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
         }
     }
 
@@ -146,10 +163,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
-            assertThrows(CursoNotFoundCustomException.class, () -> {
-                var idInexistente = UUID.randomUUID();
-                cursoController.apagarPorId(idInexistente);
-            });
+            var idInexistente = UUID.randomUUID();
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Curso não encontrado por id: " + idInexistente + "."));
         }
     }
 
@@ -159,8 +181,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValidaComIdExistente_quandoConsultarPorId_entaoRetornarSucesso() {
-            var response = cursoController.consultarPorId(cursoEntity.getId());
-            assertEquals(HttpStatus.OK, response.getStatusCode());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("id", Matchers.equalTo(cursoEntity.getId().toString()))
+                        .body("nome", Matchers.equalTo(NOME_PADRAO));
         }
     }
 
@@ -170,10 +199,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarExcecao() {
-            assertThrows(CursoNotFoundCustomException.class, () -> {
-                var idInexistente = UUID.randomUUID();
-                cursoController.consultarPorId(idInexistente);
-            });
+            var idInexistente = UUID.randomUUID();
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                    .body("title", Matchers.equalTo("Curso não encontrado por id: " + idInexistente + "."));
         }
     }
 }
