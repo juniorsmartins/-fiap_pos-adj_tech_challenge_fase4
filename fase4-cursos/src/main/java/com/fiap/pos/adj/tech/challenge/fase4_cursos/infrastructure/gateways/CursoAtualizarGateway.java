@@ -22,7 +22,7 @@ public class CursoAtualizarGateway implements CursoAtualizarOutputPort {
     @Override
     public CursoResponse atualizar(Curso curso) {
 
-        return cursoRepository.findById(curso.getId())
+        return cursoRepository.findByIdAndAtivoTrue(curso.getId())
                 .map(entity -> {
                     entity.setNome(curso.getNome());
                     return entity;

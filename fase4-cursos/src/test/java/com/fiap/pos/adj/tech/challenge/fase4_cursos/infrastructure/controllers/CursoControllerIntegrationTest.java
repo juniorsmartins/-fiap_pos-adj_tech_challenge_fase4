@@ -38,7 +38,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         RestAssured.port = randomPort; // Configura a porta dinâmica
         RestAssured.basePath = URI_CURSOS;
 
-        cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO);
+        cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO, true);
         cursoRepository.save(cursoEntity);
     }
 
@@ -125,7 +125,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarExcecao() {
-            var cursoEntity = CursoUtil.montarCursoEntity(null, "Administração de Banco de Dados I");
+            var cursoEntity = CursoUtil.montarCursoEntity(null, "Administração de Banco de Dados I", true);
             cursoRepository.save(cursoEntity);
 
             var request = CursoUtil.montarCursoRequest(NOME_PADRAO);

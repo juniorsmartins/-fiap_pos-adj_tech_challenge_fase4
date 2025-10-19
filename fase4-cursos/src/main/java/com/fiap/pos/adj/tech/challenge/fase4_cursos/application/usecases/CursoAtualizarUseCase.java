@@ -24,7 +24,7 @@ public class CursoAtualizarUseCase implements CursoAtualizarInputPort {
 
         cursoValidation.checkDuplicateNome(id, request.nome());
 
-        var curso = new Curso(id, request.nome());
+        var curso = new Curso(id, request.nome(), true);
         return cursoAtualizarOutputPort.atualizar(curso);
     }
 }

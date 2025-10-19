@@ -38,9 +38,10 @@ public class CursoController {
 
     @PostMapping
     public ResponseEntity<CursoResponse> criar(@RequestBody @Valid CursoRequest request) {
-        var response = cursoCriarInputPort.criar(request);
 
-        kafkaProducer.enviarEventoCursos(cursoPresenter.toKafka(response));
+        var response = cursoCriarInputPort.criar(request);
+        var messageKafka = cursoPresenter.toKafka(response);
+        kafkaProducer.sendEventCreateCursos(messageKafka);
 
         return ResponseEntity
                 .created(URI.create(URI_CURSOS + "/" + response.id()))
@@ -65,7 +66,7 @@ public class CursoController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<CursoResponse> consultarPorId(@PathVariable(name = "id") final UUID id) {
-        var response = cursoQueryOutputPort.findById(id)
+        var response = cursoQueryOutputPort.findByIdAndAtivoTrue(id)
                 .map(cursoPresenter::toResponse)
                 .orElseThrow(() -> new CursoNotFoundCustomException(id));
         return ResponseEntity

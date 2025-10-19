@@ -12,10 +12,13 @@ public final class Curso {
 
     private final String nome;
 
-    public Curso(UUID id, String nome) {
+    private final boolean ativo;
+
+    public Curso(UUID id, String nome, boolean ativo) {
         checkNotBlank("nome", nome);
         this.id = id;
         this.nome = nome;
+        this.ativo = ativo;
     }
 
     private void checkNotBlank(String fieldName, String value) {

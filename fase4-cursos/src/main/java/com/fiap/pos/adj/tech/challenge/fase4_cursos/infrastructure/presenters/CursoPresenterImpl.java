@@ -23,12 +23,12 @@ public class CursoPresenterImpl implements CursoPresenter {
 
     @Override
     public Curso toCurso(CursoEntity entity) {
-        return new Curso(entity.getId(), entity.getNome());
+        return new Curso(entity.getId(), entity.getNome(), entity.isAtivo());
     }
 
     @Override
     public CursoEntity toEntity(Curso curso) {
-        return new CursoEntity(curso.getId(), curso.getNome());
+        return new CursoEntity(curso.getId(), curso.getNome(), curso.isAtivo());
     }
 
     @Override

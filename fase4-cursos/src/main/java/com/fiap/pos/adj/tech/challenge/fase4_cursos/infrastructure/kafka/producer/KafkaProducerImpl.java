@@ -18,8 +18,8 @@ public final class KafkaProducerImpl implements KafkaProducer {
     private final kafkaPropertiesConfig kafkaPropertiesConfig;
 
     @Override
-    public void enviarEventoCursos(CursoKafka cursoKafka) {
+    public void sendEventCreateCursos(CursoKafka cursoKafka) {
         kafkaTemplate.send(kafkaPropertiesConfig.topicEventCreateCursos, UUID.randomUUID().toString(), cursoKafka);
-        log.info("\n\n API-CURSOS enviarEventoCursos - Mensagem enviada ao tópico de eventos: {}. \n\n", cursoKafka);
+        log.info("\n\n API-CURSOS sendEventCreateCursos - Mensagem enviada ao tópico: {}. \n\n", cursoKafka);
     }
 }

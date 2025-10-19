@@ -19,7 +19,7 @@ public class CursoApagarUseCase implements CursoApagarInputPort {
 
     @Override
     public void apagarPorId(UUID id) {
-        cursoQueryOutputPort.findById(id)
+        cursoQueryOutputPort.findByIdAndAtivoTrue(id)
                 .ifPresentOrElse(curso -> cursoApagarOutputPort.apagarPorId(curso.getId()), () -> {
                     throw new CursoNotFoundCustomException(id);
                 });

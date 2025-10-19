@@ -19,4 +19,7 @@ public final class CursoEntity {
 
     @Column(name = "nome", nullable = false, unique = true)
     private String nome;
+
+    @Column(name = "ativo", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean ativo;
 }

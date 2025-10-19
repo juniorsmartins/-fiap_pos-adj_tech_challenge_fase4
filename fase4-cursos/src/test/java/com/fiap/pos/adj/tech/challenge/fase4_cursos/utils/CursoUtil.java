@@ -11,7 +11,7 @@ public final class CursoUtil {
         return new CursoRequest(nome);
     }
 
-    public static CursoEntity montarCursoEntity(UUID id, String nome) {
-        return new CursoEntity(id, nome);
+    public static CursoEntity montarCursoEntity(UUID id, String nome, boolean ativo) {
+        return new CursoEntity(id, nome, ativo);
     }
 }

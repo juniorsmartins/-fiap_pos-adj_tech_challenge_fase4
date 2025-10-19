@@ -22,7 +22,7 @@ public class CursoCriarUseCase implements CursoCriarInputPort {
 
         cursoValidation.checkDuplicateNome(null, request.nome());
 
-        var curso = new Curso(null, request.nome());
+        var curso = new Curso(null, request.nome(), true);
         return cursoSaveOutputPort.save(curso);
     }
 }

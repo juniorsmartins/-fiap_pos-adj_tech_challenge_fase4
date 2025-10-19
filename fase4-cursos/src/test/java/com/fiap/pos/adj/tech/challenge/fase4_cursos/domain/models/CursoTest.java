@@ -14,12 +14,12 @@ class CursoTest {
     @Test
     void dadoNomeNull_quandoCriarCurso_entaoLancarExcecao() {
         var idQualquer = UUID.randomUUID();
-        assertThrows(FieldWithNullEmptyOrBlankValueIsProhibitedException.class, () -> new Curso(idQualquer, null));
+        assertThrows(FieldWithNullEmptyOrBlankValueIsProhibitedException.class, () -> new Curso(idQualquer, null, true));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "   "})
     void dadoNomeVazioOuEmBranco_quandoCriarCurso_entaoLancarExcecao(String valor) {
-        assertThrows(FieldWithNullEmptyOrBlankValueIsProhibitedException.class, () -> new Curso(null, valor));
+        assertThrows(FieldWithNullEmptyOrBlankValueIsProhibitedException.class, () -> new Curso(null, valor, true));
     }
 }
