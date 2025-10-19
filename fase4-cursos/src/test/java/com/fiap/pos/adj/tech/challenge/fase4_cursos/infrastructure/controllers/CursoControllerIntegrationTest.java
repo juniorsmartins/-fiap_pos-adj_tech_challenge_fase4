@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
@@ -139,6 +141,25 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                         .statusCode(HttpStatus.CONFLICT.value())
                         .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
         }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdDesativado_quandoAtualizarPorId_entaoLancarExcecao() {
+            var cursoEntity = CursoUtil.montarCursoEntity(null, "Redes de Computadores I", false);
+            cursoRepository.save(cursoEntity);
+
+            var request = CursoUtil.montarCursoRequest("Redes de Computadores Avançado");
+
+            assertNotNull(cursoEntity.getId());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .put("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Curso não encontrado por id: " + cursoEntity.getId() + "."));
+        }
     }
 
     @Nested
@@ -172,6 +193,22 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                     .then()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                         .body("title", Matchers.equalTo("Curso não encontrado por id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdDesativado_quandoApagarPorId_entaoLancarExcecao() {
+            var cursoEntity = CursoUtil.montarCursoEntity(null, "Segurança da Informação I", false);
+            cursoRepository.save(cursoEntity);
+
+            assertNotNull(cursoEntity.getId());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Curso não encontrado por id: " + cursoEntity.getId() + "."));
         }
     }
 
@@ -208,6 +245,22 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                     .then()
                         .statusCode(HttpStatus.NOT_FOUND.value())
                     .body("title", Matchers.equalTo("Curso não encontrado por id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdDesativado_quandoConsultarPorId_entaoLancarExcecao() {
+            var cursoEntity = CursoUtil.montarCursoEntity(null, "Engenharia de Software I", false);
+            cursoRepository.save(cursoEntity);
+
+            assertNotNull(cursoEntity.getId());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Curso não encontrado por id: " + cursoEntity.getId() + "."));
         }
     }
 }

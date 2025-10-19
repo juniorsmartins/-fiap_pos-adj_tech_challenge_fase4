@@ -20,7 +20,7 @@ public class CursoAtualizarGateway implements CursoAtualizarOutputPort {
 
     @Transactional
     @Override
-    public CursoResponse atualizar(Curso curso) {
+    public CursoResponse atualizarPorId(Curso curso) {
 
         return cursoRepository.findByIdAndAtivoTrue(curso.getId())
                 .map(entity -> {
