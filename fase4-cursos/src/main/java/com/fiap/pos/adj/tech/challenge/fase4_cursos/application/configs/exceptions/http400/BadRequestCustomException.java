@@ -5,7 +5,8 @@ import lombok.Getter;
 import java.io.Serial;
 
 @Getter
-public abstract class BadRequestCustomException extends RuntimeException {
+public abstract sealed class BadRequestCustomException extends RuntimeException permits
+        FieldWithNullEmptyOrBlankValueIsProhibitedException {
 
     @Serial
     private static final long serialVersionUID = 1L;

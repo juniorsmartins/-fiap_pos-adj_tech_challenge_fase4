@@ -4,7 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.request.Cur
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output.CursoSaveOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.entities.Curso;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.models.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.validations.CursoValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

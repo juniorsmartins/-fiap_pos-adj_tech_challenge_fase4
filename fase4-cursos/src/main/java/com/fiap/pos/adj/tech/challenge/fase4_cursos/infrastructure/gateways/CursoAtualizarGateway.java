@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.gateways;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output.CursoAtualizarOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.entities.Curso;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.models.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.presenters.CursoPresenter;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.repositories.CursoRepository;
 import lombok.RequiredArgsConstructor;
