@@ -10,6 +10,4 @@ public interface CursoQueryOutputPort {
     Optional<Curso> findByNome(String nome);
 
     Optional<Curso> findByIdAndAtivoTrue(UUID id);
-
-    Optional<Curso> findById(UUID id);
 }

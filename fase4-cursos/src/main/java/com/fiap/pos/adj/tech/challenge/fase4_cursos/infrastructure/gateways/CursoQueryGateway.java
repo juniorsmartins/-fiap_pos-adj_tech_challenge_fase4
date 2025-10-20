@@ -31,11 +31,4 @@ public class CursoQueryGateway implements CursoQueryOutputPort {
         return cursoRepository.findByIdAndAtivoTrue(id)
                 .map(cursoPresenter::toCurso);
     }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Curso> findById(UUID id) {
-        return cursoRepository.findById(id)
-                .map(cursoPresenter::toCurso);
-    }
 }
