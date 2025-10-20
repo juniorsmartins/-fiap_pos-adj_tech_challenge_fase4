@@ -1,8 +1,8 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input;
 
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.EstudanteKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
 
 public interface EstudanteCriarInputPort {
 
-    void criar(EstudanteKafka kafka);
+    void criar(CustomerKafka kafka);
 }

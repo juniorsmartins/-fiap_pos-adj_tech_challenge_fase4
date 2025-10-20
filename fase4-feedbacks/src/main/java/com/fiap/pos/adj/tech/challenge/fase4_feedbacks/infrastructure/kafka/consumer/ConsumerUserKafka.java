@@ -16,7 +16,7 @@ public final class ConsumerUserKafka {
     private final EstudanteCriarInputPort estudanteCriarInputPort;
 
     @KafkaListener(topics = "${spring.kafka.topic.event-create-users}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "estudanteKafkaListenerContainerFactory")
-    public void consumirEventoCreateUsers(final ConsumerRecord<String, EstudanteKafka> kafka, Acknowledgment ack) {
+    public void consumirEventoCreateUsers(final ConsumerRecord<String, CustomerKafka> kafka, Acknowledgment ack) {
 
         try {
             log.info("\n\n API-FEEDBACKS consumirEventoUsers - Mensagem recebida no tópico de eventos: {}. \n\n", kafka);

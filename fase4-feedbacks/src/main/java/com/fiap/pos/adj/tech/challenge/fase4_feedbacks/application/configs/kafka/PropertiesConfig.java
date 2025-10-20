@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Getter
 @Setter
-public class kafkaPropertiesConfig {
+public class PropertiesConfig {
 
     @Value("${spring.kafka.topic.event-create-feedbacks}")
     public String topicEventCreateFeedbacks;

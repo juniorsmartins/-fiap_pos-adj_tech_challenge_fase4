@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.kafka.consumer;
 
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.EstudanteKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.context.annotation.Bean;
@@ -17,21 +17,21 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 @RequiredArgsConstructor
-public class KafkaConsumerUserConfig {
+public class ConsumerCustomerConfig {
 
-    private final KafkaConsumerBaseConfig kafkaConsumerBaseConfig;
+    private final ConsumerBaseConfig consumerBaseConfig;
 
     @Bean
-    public ConsumerFactory<String, EstudanteKafka> estudanteConsumerFactory() {
-        Map<String, Object> properties = kafkaConsumerBaseConfig.consumerBaseConfigs();
+    public ConsumerFactory<String, CustomerKafka> estudanteConsumerFactory() {
+        Map<String, Object> properties = consumerBaseConfig.consumerBaseConfigs();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, EstudanteKafka.class);
+        properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, CustomerKafka.class);
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EstudanteKafka> estudanteKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, EstudanteKafka> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, CustomerKafka> estudanteKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, CustomerKafka> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(estudanteConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;

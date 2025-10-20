@@ -6,7 +6,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.FeedbackQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.KafkaProducer;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.Producer;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.FeedbackPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +31,13 @@ public class FeedbackController {
 
     private final FeedbackPresenter feedbackPresenter;
 
-    private final KafkaProducer kafkaProducer;
+    private final Producer producer;
 
     @PostMapping
     public ResponseEntity<FeedbackResponse> criar(@RequestBody @Valid FeedbackRequest request) {
         var response = feedbackCriarInputPort.criar(request);
 
-        kafkaProducer.enviarEventoFeedbacks(feedbackPresenter.toKafka(response));
+        producer.enviarEventoFeedbacks(feedbackPresenter.toKafka(response));
 
         return ResponseEntity
                 .created(URI.create(URI_FEEDBACKS + "/" + response.id()))

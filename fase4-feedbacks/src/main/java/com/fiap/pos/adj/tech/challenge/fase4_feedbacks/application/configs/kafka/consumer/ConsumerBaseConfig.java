@@ -1,4 +1,4 @@
-package com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.kafka.consumer;
+package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.kafka.consumer;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 @RequiredArgsConstructor
-public class KafkaConsumerBaseConfig {
+public class ConsumerBaseConfig {
 
     private final KafkaProperties kafkaProperties;
 

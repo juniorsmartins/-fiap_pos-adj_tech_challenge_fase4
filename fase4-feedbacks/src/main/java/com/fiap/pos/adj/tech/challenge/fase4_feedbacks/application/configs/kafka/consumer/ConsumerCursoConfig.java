@@ -17,13 +17,13 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 @RequiredArgsConstructor
-public class KafkaConsumerCursoConfig {
+public class ConsumerCursoConfig {
 
-    private final KafkaConsumerBaseConfig kafkaConsumerBaseConfig;
+    private final ConsumerBaseConfig consumerBaseConfig;
 
     @Bean
     public ConsumerFactory<String, CursoKafka> cursoConsumerFactory() {
-        Map<String, Object> properties = kafkaConsumerBaseConfig.consumerBaseConfigs();
+        Map<String, Object> properties = consumerBaseConfig.consumerBaseConfigs();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, CursoKafka.class);
         return new DefaultKafkaConsumerFactory<>(properties);

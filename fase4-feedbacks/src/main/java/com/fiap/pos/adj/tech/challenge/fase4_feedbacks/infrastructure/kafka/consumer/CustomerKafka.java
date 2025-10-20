@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.con
 
 import java.util.UUID;
 
-public record EstudanteKafka(
+public record CustomerKafka(
 
         UUID id,
 
