@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public final class CursoUtil {
 
-    public static CursoRequest montarCursoRequest(String nome) {
+    public static CursoRequest buildRequest(String nome) {
         return new CursoRequest(nome);
     }
 
-    public static CursoEntity montarCursoEntity(UUID id, String nome, boolean ativo) {
+    public static CursoEntity buildEntity(UUID id, String nome, boolean ativo) {
         return new CursoEntity(id, nome, ativo);
     }
 }

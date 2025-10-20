@@ -5,9 +5,9 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.RoleEntit
 
 import java.util.UUID;
 
-public final class PapelUtil {
+public final class RoleUtil {
 
-    public static RoleEntity montarRoleEntity(UUID id, RoleEnum roleEnum) {
+    public static RoleEntity buildEntity(UUID id, RoleEnum roleEnum) {
         return new RoleEntity(id, roleEnum);
     }
 }

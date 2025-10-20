@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @JsonPropertyOrder({"id", "email", "password", "role"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record UsuarioResponse(
+public record UserResponse(
 
         UUID id,
 

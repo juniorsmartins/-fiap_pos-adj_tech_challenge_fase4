@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.gateways;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteSaveOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.EstudantePresenter;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.EstudanteRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EstudanteSaveGateway implements EstudanteSaveOutputPort {
 
-    private final EstudanteRepository estudanteRepository;
+    private final CustomerRepository customerRepository;
 
     private final EstudantePresenter estudantePresenter;
 
@@ -20,7 +20,7 @@ public class EstudanteSaveGateway implements EstudanteSaveOutputPort {
     @Override
     public Estudante save(Estudante estudante) {
         var entity = estudantePresenter.toEntity(estudante);
-        var entitySave = estudanteRepository.save(entity);
+        var entitySave = customerRepository.save(entity);
         return estudantePresenter.toEstudante(entitySave);
     }
 }

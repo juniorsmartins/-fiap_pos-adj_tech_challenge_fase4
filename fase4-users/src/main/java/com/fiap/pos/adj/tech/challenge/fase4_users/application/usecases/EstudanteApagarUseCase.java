@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.application.usecases;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.exceptions.http404.CustomerNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteApagarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteQueryOutputPort;
@@ -21,7 +21,7 @@ public class EstudanteApagarUseCase implements EstudanteApagarInputPort {
     public void apagarPorId(UUID id) {
         estudanteQueryOutputPort.findById(id)
                 .ifPresentOrElse(estudante -> estudanteApagarOutputPort.apagarPorId(estudante.getId()), () -> {
-                    throw new EstudanteNotFoundCustomException(id);
+                    throw new CustomerNotFoundCustomException(id);
                 });
     }
 }

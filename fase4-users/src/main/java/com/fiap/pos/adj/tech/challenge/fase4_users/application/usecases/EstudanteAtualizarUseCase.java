@@ -1,7 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.application.usecases;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.EstudanteRequest;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.EstudanteResponse;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.CustomerRequest;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteAtualizarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
@@ -25,7 +25,7 @@ public class EstudanteAtualizarUseCase implements EstudanteAtualizarInputPort {
     private final RoleValidation roleValidation;
 
     @Override
-    public EstudanteResponse atualizarPorId(UUID id, EstudanteRequest request) {
+    public CustomerResponse atualizarPorId(UUID id, CustomerRequest request) {
 
         estudanteValidation.checkDuplicateEmail(id, request.email());
 

@@ -1,5 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.controllers;
 
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http404.CursoNotFoundCustomException;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http409.NomeDuplicatedCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.utils.BaseIntegrationTest;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CursoControllerIntegrationTest extends BaseIntegrationTest {
@@ -40,7 +43,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         RestAssured.port = randomPort; // Configura a porta dinâmica
         RestAssured.basePath = URI_CURSOS;
 
-        cursoEntity = CursoUtil.montarCursoEntity(null, NOME_PADRAO, true);
+        cursoEntity = CursoUtil.buildEntity(null, NOME_PADRAO, true);
         cursoRepository.save(cursoEntity);
     }
 
@@ -55,7 +58,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
-            var request = CursoUtil.montarCursoRequest("Programação Orientada a Objeto I");
+            var request = CursoUtil.buildRequest("Programação Orientada a Objeto I");
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -74,7 +77,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoCriar_entaoLancarExcecao() {
-            var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
+            var request = CursoUtil.buildRequest(NOME_PADRAO);
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -85,6 +88,12 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                         .statusCode(HttpStatus.CONFLICT.value())
                         .body("title", Matchers.equalTo("Esse nome já existe no sistema: " + NOME_PADRAO + "."));
         }
+
+        @Test
+        void dadaRequisicaoInvalidaComNomeDuplicado_quandoCriar_entaoLancarNomeDuplicatedCustomException() {
+            var request = CursoUtil.buildRequest(NOME_PADRAO);
+            assertThrows(NomeDuplicatedCustomException.class, () -> cursoController.criar(request));
+        }
     }
 
     @Nested
@@ -93,7 +102,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoAtualizarPorId_entaoRetornarSucesso() {
-            var request = CursoUtil.montarCursoRequest("Domain-Driven Design - DDD");
+            var request = CursoUtil.buildRequest("Domain-Driven Design - DDD");
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -113,7 +122,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoAtualizarPorId_entaoLancarExcecao() {
             var idInexistente = UUID.randomUUID();
-            var request = CursoUtil.montarCursoRequest("Test-Driven Development - TDD");
+            var request = CursoUtil.buildRequest("Test-Driven Development - TDD");
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -126,11 +135,18 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoAtualizarPorId_entaoLancarCursoNotFoundCustomException() {
+            var idInexistente = UUID.randomUUID();
+            var request = CursoUtil.buildRequest("Behavior-Driven Development - BDD");
+            assertThrows(CursoNotFoundCustomException.class, () -> cursoController.atualizarPorId(idInexistente, request));
+        }
+
+        @Test
         void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarExcecao() {
-            var cursoEntity = CursoUtil.montarCursoEntity(null, "Administração de Banco de Dados I", true);
+            var cursoEntity = CursoUtil.buildEntity(null, "Administração de Banco de Dados I", true);
             cursoRepository.save(cursoEntity);
 
-            var request = CursoUtil.montarCursoRequest(NOME_PADRAO);
+            var request = CursoUtil.buildRequest(NOME_PADRAO);
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -144,10 +160,10 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoAtualizarPorId_entaoLancarExcecao() {
-            var cursoEntity = CursoUtil.montarCursoEntity(null, "Redes de Computadores I", false);
+            var cursoEntity = CursoUtil.buildEntity(null, "Redes de Computadores I", false);
             cursoRepository.save(cursoEntity);
 
-            var request = CursoUtil.montarCursoRequest("Redes de Computadores Avançado");
+            var request = CursoUtil.buildRequest("Redes de Computadores Avançado");
 
             assertNotNull(cursoEntity.getId());
 
@@ -211,7 +227,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoDesativarPorId_entaoLancarExcecao() {
-            var cursoEntity = CursoUtil.montarCursoEntity(null, "Segurança da Informação I", false);
+            var cursoEntity = CursoUtil.buildEntity(null, "Segurança da Informação I", false);
             cursoRepository.save(cursoEntity);
 
             assertNotNull(cursoEntity.getId());
@@ -263,7 +279,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoConsultarPorId_entaoLancarExcecao() {
-            var cursoEntity = CursoUtil.montarCursoEntity(null, "Engenharia de Software I", false);
+            var cursoEntity = CursoUtil.buildEntity(null, "Engenharia de Software I", false);
             cursoRepository.save(cursoEntity);
 
             assertNotNull(cursoEntity.getId());

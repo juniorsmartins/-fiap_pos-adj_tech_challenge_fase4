@@ -5,9 +5,9 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.UserEntit
 
 import java.util.UUID;
 
-public final class UsuarioUtil {
+public final class UserUtil {
 
-    public static UserEntity montarUserEntity(UUID id, String email, String password, RoleEntity roleEntity) {
+    public static UserEntity buildEntity(UUID id, String email, String password, RoleEntity roleEntity) {
         return new UserEntity(id, email, password, roleEntity);
     }
 }

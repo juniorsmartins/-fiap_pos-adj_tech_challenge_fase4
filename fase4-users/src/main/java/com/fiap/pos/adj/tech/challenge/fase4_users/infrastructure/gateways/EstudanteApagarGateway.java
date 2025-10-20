@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.gateways;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteApagarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.EstudantePresenter;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.EstudanteRepository;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EstudanteApagarGateway implements EstudanteApagarOutputPort {
 
-    private final EstudanteRepository estudanteRepository;
+    private final CustomerRepository customerRepository;
 
     private final EstudantePresenter estudantePresenter;
 
@@ -22,12 +22,12 @@ public class EstudanteApagarGateway implements EstudanteApagarOutputPort {
     @Override
     public void apagar(Estudante estudante) {
         var entity = estudantePresenter.toEntity(estudante);
-        estudanteRepository.delete(entity);
+        customerRepository.delete(entity);
     }
 
     @Transactional
     @Override
     public void apagarPorId(UUID id) {
-        estudanteRepository.deleteById(id);
+        customerRepository.deleteById(id);
     }
 }

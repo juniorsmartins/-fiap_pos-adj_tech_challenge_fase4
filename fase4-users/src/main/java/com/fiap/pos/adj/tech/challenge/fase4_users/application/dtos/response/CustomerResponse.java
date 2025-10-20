@@ -7,12 +7,12 @@ import java.util.UUID;
 
 @JsonPropertyOrder({"id", "nome", "usuario"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record EstudanteResponse(
+public record CustomerResponse(
 
         UUID id,
 
         String nome,
 
-        UsuarioResponse usuario
+        UserResponse usuario
 ) {
 }

@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.application.usecases;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.EstudanteRequest;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.CustomerRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteSaveOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
@@ -22,7 +22,7 @@ public class EstudanteCriarUseCase implements EstudanteCriarInputPort {
     private final RoleValidation roleValidation;
 
     @Override
-    public Estudante criar(EstudanteRequest request) {
+    public Estudante criar(CustomerRequest request) {
 
         estudanteValidation.checkDuplicateEmail(null, request.email());
 

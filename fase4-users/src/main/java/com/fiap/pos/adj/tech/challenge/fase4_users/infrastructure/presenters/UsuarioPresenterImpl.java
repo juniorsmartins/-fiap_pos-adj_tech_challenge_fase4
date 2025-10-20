@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters;
 
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.UsuarioResponse;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.UserResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Usuario;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +13,15 @@ public class UsuarioPresenterImpl implements UsuarioPresenter {
     private final RolePresenter rolePresenter;
 
     @Override
-    public UsuarioResponse toResponse(Usuario usuario) {
+    public UserResponse toResponse(Usuario usuario) {
         var roleResponse = rolePresenter.toResponse(usuario.getRole());
-        return new UsuarioResponse(usuario.getId(), usuario.getEmail(), usuario.getPassword(), roleResponse);
+        return new UserResponse(usuario.getId(), usuario.getEmail(), usuario.getPassword(), roleResponse);
     }
 
     @Override
-    public UsuarioResponse toResponse(UserEntity user) {
+    public UserResponse toResponse(UserEntity user) {
         var roleResponse = rolePresenter.toResponse(user.getRole());
-        return new UsuarioResponse(user.getId(), user.getEmail(), user.getPassword(), roleResponse);
+        return new UserResponse(user.getId(), user.getEmail(), user.getPassword(), roleResponse);
     }
 
     @Override
