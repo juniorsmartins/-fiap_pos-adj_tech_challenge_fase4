@@ -5,7 +5,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.Cust
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerDesativarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerAtualizarInputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteCriarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.KafkaProducer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.CustomerPresenter;
@@ -24,7 +24,7 @@ public class CustomerController {
 
     protected static final String URI_CUSTOMER = "/v1/customers";
 
-    private final EstudanteCriarInputPort estudanteCriarInputPort;
+    private final CustomerCriarInputPort customerCriarInputPort;
 
     private final CustomerAtualizarInputPort customerAtualizarInputPort;
 
@@ -38,7 +38,7 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerResponse> criar(@RequestBody @Valid CustomerRequest request) {
-        var customer = estudanteCriarInputPort.criar(request);
+        var customer = customerCriarInputPort.criar(request);
         var response = customerPresenter.toResponse(customer);
 
         kafkaProducer.enviarEventoUsers(customerPresenter.toKafka(response));

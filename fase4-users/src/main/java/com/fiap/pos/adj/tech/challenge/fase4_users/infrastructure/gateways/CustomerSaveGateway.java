@@ -21,6 +21,6 @@ public class CustomerSaveGateway implements CustomerSaveOutputPort {
     public Customer save(Customer customer) {
         var entity = customerPresenter.toEntity(customer);
         var entitySave = customerRepository.save(entity);
-        return customerPresenter.toEstudante(entitySave);
+        return customerPresenter.toCustomer(entitySave);
     }
 }

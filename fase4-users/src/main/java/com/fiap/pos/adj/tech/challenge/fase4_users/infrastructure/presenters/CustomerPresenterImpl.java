@@ -32,7 +32,7 @@ public final class CustomerPresenterImpl implements CustomerPresenter {
     }
 
     @Override
-    public Customer toEstudante(CustomerEntity entity) {
+    public Customer toCustomer(CustomerEntity entity) {
         var usuario = usuarioPresenter.toUsuario(entity.getUser());
         return new Customer(entity.getId(), entity.getNome(), entity.isAtivo(), usuario);
     }

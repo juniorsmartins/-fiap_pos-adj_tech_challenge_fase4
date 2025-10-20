@@ -19,8 +19,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CustomerControllerIntegrationTest extends BaseIntegrationTest {
@@ -224,14 +223,43 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     @Nested
-    @DisplayName("ApagarPorIdInvalido")
-    class ApagarPorIdInvalido {
+    @DisplayName("DesativarPorIdInvalido")
+    class DesativarPorIdInvalido {
 
         @Test
-        void dadaRequisicaoInvalida_quandoApagarPorId_entaoLancarExcecao() {
+        void dadaRequisicaoInvalidaComIdInexistente_quandoDesativarPorId_entaoLancarException() {
             var idInexistente = UUID.randomUUID();
-            assertThrows(CustomerNotFoundCustomException.class, () -> customerController
-                    .desativarPorId(idInexistente));
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Cliente não encontrado por id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalida_quandoDesativarPorId_entaoLancarCustomerNotFoundCustomException() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(CustomerNotFoundCustomException.class, () -> customerController.desativarPorId(idInexistente));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdDesativado_quandoDesativarPorId_entaoLancarException() {
+            var customerBuscadoAntes = customerController.consultarPorId(customerResponse.id());
+            assertNotNull(customerBuscadoAntes.getBody());
+
+            var customerDesativado = customerController.desativarPorId(customerResponse.id());
+            assertEquals(HttpStatus.NO_CONTENT, customerDesativado.getStatusCode());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", customerResponse.id())
+                    .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .body("title", Matchers.equalTo("Cliente não encontrado por id: " + customerResponse.id() + "."));
         }
     }
 
@@ -241,11 +269,16 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoConsultarPorId_entaoRetornarSucesso() {
-            var response = customerController.consultarPorId(customerResponse.id());
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            var body = response.getBody();
-            assertEquals(customerResponse.id(), body.id());
-            assertEquals(customerResponse.nome(), body.nome());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", customerResponse.id())
+                    .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("id", Matchers.equalTo(customerResponse.id().toString()))
+                        .body("nome", Matchers.equalTo(customerResponse.nome()))
+                        .body("usuario.email", Matchers.equalTo(customerResponse.usuario().email()));
         }
     }
 
@@ -256,8 +289,37 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void dadaRequisicaoInvalida_quandoConsultarPorId_entaoLancarExcecao() {
             var idInexistente = UUID.randomUUID();
-            assertThrows(CustomerNotFoundCustomException.class, () -> customerController
-                    .consultarPorId(idInexistente));
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Cliente não encontrado por id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalida_quandoConsultarPorId_entaoLancarCustomerNotFoundCustomException() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(CustomerNotFoundCustomException.class, () -> customerController.consultarPorId(idInexistente));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdDesativado_quandoConsultarPorId_entaoLancarExcecao() {
+            var customerBuscadoAntes = customerController.consultarPorId(customerResponse.id());
+            assertNotNull(customerBuscadoAntes.getBody());
+
+            var customerDesativado = customerController.desativarPorId(customerResponse.id());
+            assertEquals(HttpStatus.NO_CONTENT, customerDesativado.getStatusCode());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", customerResponse.id())
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Cliente não encontrado por id: " + customerResponse.id() + "."));
         }
     }
 }

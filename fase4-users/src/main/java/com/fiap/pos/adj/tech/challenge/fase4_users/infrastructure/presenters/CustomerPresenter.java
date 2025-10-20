@@ -13,7 +13,7 @@ public interface CustomerPresenter {
 
     CustomerEntity toEntity(Customer customer);
 
-    Customer toEstudante(CustomerEntity entity);
+    Customer toCustomer(CustomerEntity entity);
 
     EstudanteKafka toKafka(CustomerResponse response);
 }

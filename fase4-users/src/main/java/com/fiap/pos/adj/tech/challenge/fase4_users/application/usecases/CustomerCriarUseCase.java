@@ -1,7 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.application.usecases;
 
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.CustomerRequest;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteCriarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerSaveOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Usuario;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EstudanteCriarUseCase implements EstudanteCriarInputPort {
+public class CustomerCriarUseCase implements CustomerCriarInputPort {
 
     private final CustomerSaveOutputPort customerSaveOutputPort;
 
@@ -28,7 +28,7 @@ public class EstudanteCriarUseCase implements EstudanteCriarInputPort {
 
         var papel = roleValidation.getOrCreateRole(RoleEnum.ROLE_ESTUDANTE);
         var usuario = new Usuario(null, request.email(), request.password(), papel);
-        var estudante = new Customer(null, request.nome(), true, usuario);
-        return customerSaveOutputPort.save(estudante);
+        var customer = new Customer(null, request.nome(), true, usuario);
+        return customerSaveOutputPort.save(customer);
     }
 }

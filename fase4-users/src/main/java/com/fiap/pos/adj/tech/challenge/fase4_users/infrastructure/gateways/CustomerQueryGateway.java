@@ -23,13 +23,13 @@ public class CustomerQueryGateway implements CustomerQueryOutputPort {
     @Override
     public Optional<Customer> findByEmail(String email) {
         return customerRepository.findByUserEmail(email)
-                .map(customerPresenter::toEstudante);
+                .map(customerPresenter::toCustomer);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Optional<Customer> findByIdAndAtivoTrue(UUID id) {
         return customerRepository.findByIdAndAtivoTrue(id)
-                .map(customerPresenter::toEstudante);
+                .map(customerPresenter::toCustomer);
     }
 }

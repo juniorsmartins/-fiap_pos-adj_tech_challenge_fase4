@@ -236,11 +236,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoDesativarPorId_entaoLancarCursoNotFoundCustomException() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(CursoNotFoundCustomException.class, () -> cursoController.desativarPorId(idInexistente));
+        }
+
+        @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoDesativarPorId_entaoLancarExcecao() {
             var cursoEntity = CursoUtil.buildEntity(null, "Segurança da Informação I", false);
             cursoRepository.save(cursoEntity);
-
-            assertNotNull(cursoEntity.getId());
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -288,11 +292,15 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarCursoNotFoundCustomException() {
+            var idInexistente = UUID.randomUUID();
+            assertThrows(CursoNotFoundCustomException.class, () -> cursoController.consultarPorId(idInexistente));
+        }
+
+        @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoConsultarPorId_entaoLancarExcecao() {
             var cursoEntity = CursoUtil.buildEntity(null, "Engenharia de Software I", false);
             cursoRepository.save(cursoEntity);
-
-            assertNotNull(cursoEntity.getId());
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
