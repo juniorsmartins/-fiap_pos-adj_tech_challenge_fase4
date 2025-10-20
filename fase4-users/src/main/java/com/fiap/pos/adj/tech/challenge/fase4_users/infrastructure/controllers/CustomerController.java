@@ -7,7 +7,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.Custo
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.KafkaProducer;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.Producer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.CustomerPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +34,14 @@ public class CustomerController {
 
     private final CustomerPresenter customerPresenter;
 
-    private final KafkaProducer kafkaProducer;
+    private final Producer producer;
 
     @PostMapping
     public ResponseEntity<CustomerResponse> criar(@RequestBody @Valid CustomerRequest request) {
         var customer = customerCriarInputPort.criar(request);
         var response = customerPresenter.toResponse(customer);
 
-        kafkaProducer.enviarEventoUsers(customerPresenter.toKafka(response));
+        producer.sendEventCreateCustomers(customerPresenter.toKafka(response));
 
         return ResponseEntity
                 .created(URI.create(URI_CUSTOMER + "/" + response.id()))
@@ -49,7 +49,8 @@ public class CustomerController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<CustomerResponse> atualizarPorId(@PathVariable(name = "id") final UUID id, @RequestBody @Valid CustomerRequest request) {
+    public ResponseEntity<CustomerResponse> atualizarPorId(@PathVariable(name = "id") final UUID id,
+                                                           @RequestBody @Valid CustomerRequest request) {
         var response = customerAtualizarInputPort.atualizarPorId(id, request);
 
         return ResponseEntity

@@ -8,11 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Getter
 @Setter
-public class kafkaPropertiesConfig {
+public class PropertiesConfig {
 
     @Value("${spring.kafka.topic.event-create-users}")
     public String topicEventCreateUsers;
-
-    @Value("${spring.kafka.topic.event-update-users}")
-    public String topicEventUpdateUsers;
 }

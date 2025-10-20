@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer;
 
-public interface KafkaProducer {
+public interface Producer {
 
-    void enviarEventoUsers(EstudanteKafka kafka);
+    void sendEventCreateCustomers(CustomerKafka kafka);
 }

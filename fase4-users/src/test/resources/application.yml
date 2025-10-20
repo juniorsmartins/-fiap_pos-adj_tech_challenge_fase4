@@ -22,8 +22,5 @@ spring:
     bootstrap-servers: kafka:9092
     topic:
       event-create-users: event-create-users-test
-      event-update-users: event-update-users-test
-    consumer:
-      group-id: group-id-api-users-test
-      auto-offset-reset: earliest
+
 

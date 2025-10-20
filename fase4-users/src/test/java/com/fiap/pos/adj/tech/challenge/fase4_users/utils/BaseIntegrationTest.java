@@ -6,8 +6,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
 @EmbeddedKafka(partitions = 1,
-        topics = {"${spring.kafka.topic.event-create-users}",
-                "${spring.kafka.topic.event-update-users}"},
+        topics = {"${spring.kafka.topic.event-create-users}"},
         brokerProperties = {"listeners=PLAINTEXT://localhost:0",
         "auto.create.topics.enable=true"})
 @DirtiesContext
