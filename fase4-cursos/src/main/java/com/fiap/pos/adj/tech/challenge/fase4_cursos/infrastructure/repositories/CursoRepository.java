@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public interface CursoRepository extends JpaRepository<CursoEntity, UUID> {
 
-    Optional<CursoEntity> findByNomeAndAtivoTrue(String nome);
-
     Optional<CursoEntity> findByIdAndAtivoTrue(UUID id);
 
     Optional<CursoEntity> findByNome(String nome);

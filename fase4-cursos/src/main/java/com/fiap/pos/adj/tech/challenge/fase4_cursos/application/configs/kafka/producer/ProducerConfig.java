@@ -1,7 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.kafka.producer;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,7 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 @RequiredArgsConstructor
-public class KafkaProducerConfig {
+public class ProducerConfig {
 
     private final KafkaProperties kafkaProperties;
 
@@ -25,8 +24,8 @@ public class KafkaProducerConfig {
     public Map<String, Object> producerConfigs() {
         Map<String, Object> properties = kafkaProperties.buildProducerProperties();
         properties.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        properties.put(org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        properties.put(org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return properties;
     }
 

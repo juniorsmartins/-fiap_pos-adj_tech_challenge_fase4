@@ -7,7 +7,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.Curs
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output.CursoQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.KafkaProducer;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.Producer;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.presenters.CursoPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,14 +34,13 @@ public class CursoController {
 
     private final CursoPresenter cursoPresenter;
 
-    private final KafkaProducer kafkaProducer;
+    private final Producer producer;
 
     @PostMapping
     public ResponseEntity<CursoResponse> criar(@RequestBody @Valid CursoRequest request) {
-
         var response = cursoCriarInputPort.criar(request);
         var messageKafka = cursoPresenter.toKafka(response);
-        kafkaProducer.sendEventCreateCursos(messageKafka);
+        producer.sendEventCreateCursos(messageKafka);
 
         return ResponseEntity
                 .created(URI.create(URI_CURSOS + "/" + response.id()))

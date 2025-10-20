@@ -176,6 +176,20 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
                     .then()
                         .statusCode(HttpStatus.NO_CONTENT.value());
         }
+
+        @Test
+        void dadaRequisicaoValida_quandoApagarPorId_entaoArmazenarAtivoFalseNoBancoDeDados() {
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", cursoEntity.getId())
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+
+            var cursoOptional = cursoRepository.findById(cursoEntity.getId());
+            Assertions.assertTrue(cursoOptional.isPresent());
+            Assertions.assertFalse(cursoOptional.get().isAtivo());
+        }
     }
 
     @Nested
