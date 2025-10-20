@@ -163,11 +163,11 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     @Nested
-    @DisplayName("ApagarPorIdValido")
-    class ApagarPorIdValido {
+    @DisplayName("DesativarPorIdValido")
+    class DesativarPorIdValido {
 
         @Test
-        void dadaRequisicaoValidaComIdExistente_quandoApagarPorId_entaoRetornarSucesso() {
+        void dadaRequisicaoValidaComIdExistente_quandoDesativarPorId_entaoRetornarSucesso() {
 
             RestAssured.given()
                         .contentType(ContentType.JSON)
@@ -178,7 +178,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
-        void dadaRequisicaoValida_quandoApagarPorId_entaoArmazenarAtivoFalseNoBancoDeDados() {
+        void dadaRequisicaoValida_quandoDesativarPorId_entaoArmazenarAtivoFalseNoBancoDeDados() {
             RestAssured.given()
                         .contentType(ContentType.JSON)
                     .when()
@@ -193,11 +193,11 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
     }
 
     @Nested
-    @DisplayName("ApagarPorIdInvalido")
-    class ApagarPorIdInvalido {
+    @DisplayName("DesativarPorIdInvalido")
+    class DesativarPorIdInvalido {
 
         @Test
-        void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
+        void dadaRequisicaoInvalidaComIdInexistente_quandoDesativarPorId_entaoLancarExcecao() {
             var idInexistente = UUID.randomUUID();
 
             RestAssured.given()
@@ -210,7 +210,7 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
-        void dadaRequisicaoInvalidaComIdDesativado_quandoApagarPorId_entaoLancarExcecao() {
+        void dadaRequisicaoInvalidaComIdDesativado_quandoDesativarPorId_entaoLancarExcecao() {
             var cursoEntity = CursoUtil.montarCursoEntity(null, "Segurança da Informação I", false);
             cursoRepository.save(cursoEntity);
 

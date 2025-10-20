@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.controllers;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.configs.exceptions.http404.CursoNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.request.CursoRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.response.CursoResponse;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoApagarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoDesativarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.ports.output.CursoQueryOutputPort;
@@ -28,7 +28,7 @@ public class CursoController {
 
     private final CursoAtualizarInputPort cursoAtualizarInputPort;
 
-    private final CursoApagarInputPort cursoApagarInputPort;
+    private final CursoDesativarInputPort cursoDesativarInputPort;
 
     private final CursoQueryOutputPort cursoQueryOutputPort;
 
@@ -56,8 +56,8 @@ public class CursoController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> apagarPorId(@PathVariable(name = "id") final UUID id) {
-        cursoApagarInputPort.apagarPorId(id);
+    public ResponseEntity<Void> desativarPorId(@PathVariable(name = "id") final UUID id) {
+        cursoDesativarInputPort.desativarPorId(id);
         return ResponseEntity
                 .noContent()
                 .build();
