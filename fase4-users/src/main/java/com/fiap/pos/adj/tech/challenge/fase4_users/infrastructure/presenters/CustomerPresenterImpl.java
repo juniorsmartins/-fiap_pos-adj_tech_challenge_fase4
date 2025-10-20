@@ -1,22 +1,22 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters;
 
+import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.EstudanteKafka;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
-import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Estudante;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.CustomerEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public final class EstudantePresenterImpl implements EstudantePresenter {
+public final class CustomerPresenterImpl implements CustomerPresenter {
 
     private final UsuarioPresenter usuarioPresenter;
 
     @Override
-    public CustomerResponse toResponse(Estudante estudante) {
-        var usuarioResponse = usuarioPresenter.toResponse(estudante.getUser());
-        return new CustomerResponse(estudante.getId(), estudante.getNome(), usuarioResponse);
+    public CustomerResponse toResponse(Customer customer) {
+        var usuarioResponse = usuarioPresenter.toResponse(customer.getUser());
+        return new CustomerResponse(customer.getId(), customer.getNome(), usuarioResponse);
     }
 
     @Override
@@ -26,15 +26,15 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
     }
 
     @Override
-    public CustomerEntity toEntity(Estudante estudante) {
-        var userEntity = usuarioPresenter.toEntity(estudante.getUser());
-        return new CustomerEntity(estudante.getId(), estudante.getNome(), userEntity);
+    public CustomerEntity toEntity(Customer customer) {
+        var userEntity = usuarioPresenter.toEntity(customer.getUser());
+        return new CustomerEntity(customer.getId(), customer.getNome(), customer.isAtivo(), userEntity);
     }
 
     @Override
-    public Estudante toEstudante(CustomerEntity entity) {
+    public Customer toEstudante(CustomerEntity entity) {
         var usuario = usuarioPresenter.toUsuario(entity.getUser());
-        return new Estudante(entity.getId(), entity.getNome(), usuario);
+        return new Customer(entity.getId(), entity.getNome(), entity.isAtivo(), usuario);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input;
 
 import java.util.UUID;
 
-public interface EstudanteApagarInputPort {
+public interface CustomerDesativarInputPort {
 
-    void apagarPorId(UUID id);
+    void desativarPorId(UUID id);
 }

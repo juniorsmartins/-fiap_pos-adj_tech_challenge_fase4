@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID> {
 
     Optional<CustomerEntity> findByUserEmail(String email);
+
+    Optional<CustomerEntity> findByIdAndAtivoTrue(UUID id);
 }

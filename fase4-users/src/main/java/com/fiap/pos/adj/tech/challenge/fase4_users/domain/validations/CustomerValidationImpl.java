@@ -1,7 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.domain.validations;
 
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.exceptions.http409.EmailConflictRulesCustomException;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteQueryOutputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerQueryOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +9,13 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class EstudanteValidationImpl implements EstudanteValidation {
+public class CustomerValidationImpl implements CustomerValidation {
 
-    private final EstudanteQueryOutputPort estudanteQueryOutputPort;
+    private final CustomerQueryOutputPort customerQueryOutputPort;
 
     @Override
     public void checkDuplicateEmail(UUID customerId, String email) {
-        estudanteQueryOutputPort.findByEmail(email)
+        customerQueryOutputPort.findByEmail(email)
                 .ifPresent(estudante -> {
                     if (customerId == null || !customerId.equals(estudante.getId())) {
                         throw new EmailConflictRulesCustomException(email);

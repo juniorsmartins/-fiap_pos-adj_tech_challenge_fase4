@@ -158,16 +158,68 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
             assertThrows(CustomerNotFoundCustomException.class, () -> customerController
                     .atualizarPorId(idInexistente, request));
         }
+
+        @Test
+        void dadaRequisicaoInvalidaComEmailDuplicado_quandoAtualizarPorId_entaoLancarException() {
+            var requestBase = CustomerUtil
+                    .buildRequest("Martin Fowler", "fowler@yahoo.com", "88188");
+            var response = customerController.criar(requestBase);
+
+            var requestUpdate = CustomerUtil
+                    .buildRequest("Martin A. Fowler", EMAIL_TESTE, "777777");
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(requestUpdate)
+                    .when()
+                        .put("/{id}", response.getBody().id())
+                    .then()
+                        .statusCode(HttpStatus.CONFLICT.value())
+                        .body("title", Matchers.equalTo("Esse email já existe no sistema: " + EMAIL_TESTE + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComEmailDuplicado_quandoAtualizarPorId_entaoLancarEmailConflictRulesCustomException() {
+            var requestBase = CustomerUtil
+                    .buildRequest("Martin Fowler", "fowler@yahoo.com", "88188");
+            var response = customerController.criar(requestBase);
+
+            var requestUpdate = CustomerUtil
+                    .buildRequest("Martin A. Fowler", EMAIL_TESTE, "777777");
+
+            assertThrows(EmailConflictRulesCustomException.class, () ->
+                    customerController.atualizarPorId(response.getBody().id(), requestUpdate));
+        }
     }
 
     @Nested
-    @DisplayName("ApagarPorIdValido")
-    class ApagarPorIdValido {
+    @DisplayName("DesativarPorIdValido")
+    class DesativarPorIdValido {
 
         @Test
-        void dadaRequisicaoValida_quandoApagarPorId_entaoRetornarRespontaComSucesso() {
-            var response = customerController.apagarPorId(customerResponse.id());
-            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        void dadaRequisicaoValida_quandoDesativarPorId_entaoRetornarSucesso() {
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", customerResponse.id())
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+        }
+
+        @Test
+        void dadaRequisicaoValida_quandoDesativarPorId_entaoArmazenarAtivoFalseNoBancoDeDados() {
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", customerResponse.id())
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+
+            var customerOptional = customerRepository.findById(customerResponse.id());
+            Assertions.assertTrue(customerOptional.isPresent());
+            Assertions.assertFalse(customerOptional.get().isAtivo());
         }
     }
 
@@ -179,7 +231,7 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
         void dadaRequisicaoInvalida_quandoApagarPorId_entaoLancarExcecao() {
             var idInexistente = UUID.randomUUID();
             assertThrows(CustomerNotFoundCustomException.class, () -> customerController
-                    .apagarPorId(idInexistente));
+                    .desativarPorId(idInexistente));
         }
     }
 

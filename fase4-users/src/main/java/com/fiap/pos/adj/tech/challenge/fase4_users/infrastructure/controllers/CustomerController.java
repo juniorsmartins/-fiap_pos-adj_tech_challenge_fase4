@@ -3,12 +3,12 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.controllers;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.exceptions.http404.CustomerNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.request.CustomerRequest;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteApagarInputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteAtualizarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerDesativarInputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.EstudanteCriarInputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.EstudanteQueryOutputPort;
+import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerQueryOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.KafkaProducer;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.EstudantePresenter;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.CustomerPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +26,22 @@ public class CustomerController {
 
     private final EstudanteCriarInputPort estudanteCriarInputPort;
 
-    private final EstudanteAtualizarInputPort estudanteAtualizarInputPort;
+    private final CustomerAtualizarInputPort customerAtualizarInputPort;
 
-    private final EstudanteApagarInputPort estudanteApagarInputPort;
+    private final CustomerDesativarInputPort customerDesativarInputPort;
 
-    private final EstudanteQueryOutputPort estudanteQueryOutputPort;
+    private final CustomerQueryOutputPort customerQueryOutputPort;
 
-    private final EstudantePresenter estudantePresenter;
+    private final CustomerPresenter customerPresenter;
 
     private final KafkaProducer kafkaProducer;
 
     @PostMapping
     public ResponseEntity<CustomerResponse> criar(@RequestBody @Valid CustomerRequest request) {
         var customer = estudanteCriarInputPort.criar(request);
-        var response = estudantePresenter.toResponse(customer);
+        var response = customerPresenter.toResponse(customer);
 
-        kafkaProducer.enviarEventoUsers(estudantePresenter.toKafka(response));
+        kafkaProducer.enviarEventoUsers(customerPresenter.toKafka(response));
 
         return ResponseEntity
                 .created(URI.create(URI_CUSTOMER + "/" + response.id()))
@@ -50,7 +50,7 @@ public class CustomerController {
 
     @PutMapping(path = "/{id}")
     public ResponseEntity<CustomerResponse> atualizarPorId(@PathVariable(name = "id") final UUID id, @RequestBody @Valid CustomerRequest request) {
-        var response = estudanteAtualizarInputPort.atualizarPorId(id, request);
+        var response = customerAtualizarInputPort.atualizarPorId(id, request);
 
         return ResponseEntity
                 .ok()
@@ -58,8 +58,8 @@ public class CustomerController {
     }
 
     @DeleteMapping(path = {"/{id}"})
-    public ResponseEntity<Void> apagarPorId(@PathVariable(name = "id") final UUID id) {
-        estudanteApagarInputPort.apagarPorId(id);
+    public ResponseEntity<Void> desativarPorId(@PathVariable(name = "id") final UUID id) {
+        customerDesativarInputPort.desativarPorId(id);
 
         return ResponseEntity
                 .noContent()
@@ -68,8 +68,8 @@ public class CustomerController {
 
     @GetMapping(path = {"/{id}"})
     public ResponseEntity<CustomerResponse> consultarPorId(@PathVariable(name = "id") final UUID id) {
-        var response = estudanteQueryOutputPort.findById(id)
-                .map(estudantePresenter::toResponse)
+        var response = customerQueryOutputPort.findByIdAndAtivoTrue(id)
+                .map(customerPresenter::toResponse)
                 .orElseThrow(() -> new CustomerNotFoundCustomException(id));
 
         return ResponseEntity

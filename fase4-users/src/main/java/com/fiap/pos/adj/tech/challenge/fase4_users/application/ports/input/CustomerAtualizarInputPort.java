@@ -5,7 +5,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.Cus
 
 import java.util.UUID;
 
-public interface EstudanteAtualizarInputPort {
+public interface CustomerAtualizarInputPort {
 
     CustomerResponse atualizarPorId(UUID id, CustomerRequest request);
 }

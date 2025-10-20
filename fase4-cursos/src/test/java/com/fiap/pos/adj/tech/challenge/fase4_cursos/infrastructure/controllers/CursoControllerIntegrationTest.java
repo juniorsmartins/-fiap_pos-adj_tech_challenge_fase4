@@ -159,6 +159,16 @@ class CursoControllerIntegrationTest extends BaseIntegrationTest {
         }
 
         @Test
+        void dadaRequisicaoInvalidaComNomeDuplicado_quandoAtualizarPorId_entaoLancarNomeDuplicatedCustomException() {
+            var cursoEntity = CursoUtil.buildEntity(null, "Python na Análise de Dados", true);
+            cursoRepository.save(cursoEntity);
+
+            var request = CursoUtil.buildRequest(NOME_PADRAO);
+            assertThrows(NomeDuplicatedCustomException.class, () -> cursoController
+                    .atualizarPorId(cursoEntity.getId(), request));
+        }
+
+        @Test
         void dadaRequisicaoInvalidaComIdDesativado_quandoAtualizarPorId_entaoLancarExcecao() {
             var cursoEntity = CursoUtil.buildEntity(null, "Redes de Computadores I", false);
             cursoRepository.save(cursoEntity);
