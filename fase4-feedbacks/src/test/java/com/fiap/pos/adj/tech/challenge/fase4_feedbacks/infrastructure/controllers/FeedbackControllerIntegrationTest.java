@@ -25,8 +25,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
@@ -167,8 +166,28 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoApagarPorId_entaoRetornarSucesso() {
-            var response = feedbackController.apagarPorId(feedbackEntity1.getId());
-            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", feedbackEntity1.getId())
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+        }
+
+        @Test
+        void dadaRequisicaoValida_quandoApagarPorId_entaoDeletarDoBancoDeDados() {
+            var id = feedbackEntity1.getId();
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", id)
+                    .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+
+            var feedbackDoBanco = feedbackRepository.findById(id);
+            assertFalse(feedbackDoBanco.isPresent());
         }
     }
 
@@ -178,6 +197,19 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .delete("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Avaliação não encontrada pelo id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoApagarPorId_entaoLancarFeedbackNotFoundCustomException() {
             assertThrows(FeedbackNotFoundCustomException.class, () -> {
                 feedbackController.apagarPorId(UUID.randomUUID());
             });
@@ -190,14 +222,18 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoConsultarPorId_entaoRetornarSucesso() {
-            var response = feedbackController.consultarPorId(feedbackEntity1.getId());
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            var body = response.getBody();
-            assertEquals(feedbackEntity1.getId(), body.id());
-            assertEquals(feedbackEntity1.getNota(), body.nota());
-            assertEquals(feedbackEntity1.getComentario(), body.comentario());
-            assertEquals(feedbackEntity1.getCurso().getId(), body.curso().id());
-            assertEquals(feedbackEntity1.getCustomer().getId(), body.customer().id());
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", feedbackEntity1.getId())
+                    .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("id", Matchers.equalTo(feedbackEntity1.getId().toString()))
+                        .body("nota", Matchers.equalTo(feedbackEntity1.getNota()))
+                        .body("comentario", Matchers.equalTo(feedbackEntity1.getComentario()))
+                        .body("curso.id", Matchers.equalTo(feedbackEntity1.getCurso().getId().toString()))
+                        .body("customer.id", Matchers.equalTo(feedbackEntity1.getCustomer().getId().toString()));
         }
     }
 
@@ -207,6 +243,19 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarExcecao() {
+            var idInexistente = UUID.randomUUID();
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                    .when()
+                        .get("/{id}", idInexistente)
+                    .then()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .body("title", Matchers.equalTo("Avaliação não encontrada pelo id: " + idInexistente + "."));
+        }
+
+        @Test
+        void dadaRequisicaoInvalidaComIdInexistente_quandoConsultarPorId_entaoLancarFeedbackNotFoundCustomException() {
             assertThrows(FeedbackNotFoundCustomException.class, () -> {
                 var idInexistente = UUID.randomUUID();
                 feedbackController.consultarPorId(idInexistente);
