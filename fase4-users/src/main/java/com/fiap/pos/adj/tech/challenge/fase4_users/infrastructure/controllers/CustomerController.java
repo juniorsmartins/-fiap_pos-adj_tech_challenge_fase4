@@ -7,7 +7,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.Custo
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerAtualizarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.CustomerCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.Producer;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.message.producer.Producer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.CustomerPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

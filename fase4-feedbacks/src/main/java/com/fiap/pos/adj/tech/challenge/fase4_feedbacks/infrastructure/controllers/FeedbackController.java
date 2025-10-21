@@ -6,7 +6,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.FeedbackApagarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.FeedbackQueryOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.Producer;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.message.producer.Producer;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.FeedbackPresenter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
