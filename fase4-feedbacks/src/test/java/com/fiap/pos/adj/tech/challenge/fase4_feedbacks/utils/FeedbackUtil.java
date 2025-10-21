@@ -9,11 +9,11 @@ import java.util.UUID;
 
 public final class FeedbackUtil {
 
-    public static FeedbackRequest montarFeedbackRequest(int nota, String comentario, UUID cursoId, UUID estudanteId) {
+    public static FeedbackRequest buildRequest(int nota, String comentario, UUID cursoId, UUID estudanteId) {
         return new FeedbackRequest(nota, comentario, cursoId, estudanteId);
     }
 
-    public static FeedbackEntity montarFeedbackEntity(UUID id, int nota, String comentario, CursoEntity curso, CustomerEntity estudante) {
+    public static FeedbackEntity buildEntity(UUID id, int nota, String comentario, CursoEntity curso, CustomerEntity estudante) {
         return new FeedbackEntity(id, nota, comentario, curso, estudante);
     }
 }

@@ -15,13 +15,13 @@ public final class Feedback {
 
     private final Curso curso;
 
-    private final Estudante estudante;
+    private final Customer customer;
 
-    public Feedback(UUID id, int nota, String comentario, Curso curso, Estudante estudante) {
+    public Feedback(UUID id, int nota, String comentario, Curso curso, Customer customer) {
         this.id = id;
         this.nota = nota;
         this.comentario = comentario;
         this.curso = curso;
-        this.estudante = estudante;
+        this.customer = customer;
     }
 }

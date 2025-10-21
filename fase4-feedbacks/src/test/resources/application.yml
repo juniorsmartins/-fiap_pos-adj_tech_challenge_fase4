@@ -27,4 +27,6 @@ spring:
     consumer:
       group-id: group-id-api-feedbacks-test
       auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
 

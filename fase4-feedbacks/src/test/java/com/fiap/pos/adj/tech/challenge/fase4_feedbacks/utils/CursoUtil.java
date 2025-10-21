@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public final class CursoUtil {
 
-    public static CursoEntity montarCursoEntity(UUID id) {
+    public static CursoEntity buildEntity(UUID id) {
         return new CursoEntity(id);
     }
 }

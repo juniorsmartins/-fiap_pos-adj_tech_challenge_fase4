@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FeedbackController {
 
-    protected static final String URI_FEEDBACKS = "/api/v1/feedbacks";
+    protected static final String URI_FEEDBACKS = "/v1/feedbacks";
 
     private final FeedbackCriarInputPort feedbackCriarInputPort;
 
@@ -37,7 +37,7 @@ public class FeedbackController {
     public ResponseEntity<FeedbackResponse> criar(@RequestBody @Valid FeedbackRequest request) {
         var response = feedbackCriarInputPort.criar(request);
 
-        producer.enviarEventoFeedbacks(feedbackPresenter.toKafka(response));
+        producer.sendEventCreateFeedbacks(feedbackPresenter.toKafka(response));
 
         return ResponseEntity
                 .created(URI.create(URI_FEEDBACKS + "/" + response.id()))

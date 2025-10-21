@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.io.Serial;
 
 @Getter
-public abstract sealed class ResourceNotFoundCustomException extends RuntimeException permits EstudanteNotFoundCustomException,
+public abstract sealed class ResourceNotFoundCustomException extends RuntimeException permits CustomerNotFoundCustomException,
         CursoNotFoundCustomException, FeedbackNotFoundCustomException {
 
     @Serial

@@ -27,6 +27,6 @@ public final class FeedbackEntity {
     private CursoEntity curso;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "estudante_id", nullable = false)
-    private CustomerEntity estudante;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private CustomerEntity customer;
 }

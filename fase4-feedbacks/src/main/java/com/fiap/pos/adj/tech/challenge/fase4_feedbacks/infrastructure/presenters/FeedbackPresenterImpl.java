@@ -13,38 +13,38 @@ public class FeedbackPresenterImpl implements FeedbackPresenter {
 
     private final CursoPresenter cursoPresenter;
 
-    private final EstudantePresenter estudantePresenter;
+    private final CustomerPresenter customerPresenter;
 
     @Override
     public FeedbackEntity toEntity(Feedback feedback) {
         var cursoEntity = cursoPresenter.toEntity(feedback.getCurso());
-        var estudanteEntity = estudantePresenter.toEntity(feedback.getEstudante());
+        var estudanteEntity = customerPresenter.toEntity(feedback.getCustomer());
         return new FeedbackEntity(feedback.getId(), feedback.getNota(), feedback.getComentario(), cursoEntity, estudanteEntity);
     }
 
     @Override
     public FeedbackResponse toResponse(FeedbackEntity entity) {
         var cursoResponse = cursoPresenter.toResponse(entity.getCurso());
-        var estudanteResponse = estudantePresenter.toResponse(entity.getEstudante());
+        var estudanteResponse = customerPresenter.toResponse(entity.getCustomer());
         return new FeedbackResponse(entity.getId(), entity.getNota(), entity.getComentario(), cursoResponse, estudanteResponse);
     }
 
     @Override
     public FeedbackResponse toResponse(Feedback feedback) {
         var cursoResponse = cursoPresenter.toResponse(feedback.getCurso());
-        var estudanteResponse = estudantePresenter.toResponse(feedback.getEstudante());
+        var estudanteResponse = customerPresenter.toResponse(feedback.getCustomer());
         return new FeedbackResponse(feedback.getId(), feedback.getNota(), feedback.getComentario(), cursoResponse, estudanteResponse);
     }
 
     @Override
     public Feedback toFeedback(FeedbackEntity entity) {
         var curso = cursoPresenter.toCurso(entity.getCurso());
-        var estudante = estudantePresenter.toModel(entity.getEstudante());
+        var estudante = customerPresenter.toModel(entity.getCustomer());
         return new Feedback(entity.getId(), entity.getNota(), entity.getComentario(), curso, estudante);
     }
 
     @Override
     public FeedbackKafka toKafka(FeedbackResponse response) {
-        return new FeedbackKafka(response.id(), response.nota(), response.comentario(), response.curso().id(), response.estudante().id());
+        return new FeedbackKafka(response.id(), response.nota(), response.comentario(), response.curso().id(), response.customer().id());
     }
 }

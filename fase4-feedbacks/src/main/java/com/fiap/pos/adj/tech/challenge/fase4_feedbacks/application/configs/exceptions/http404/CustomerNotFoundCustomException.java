@@ -3,12 +3,12 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exce
 import java.io.Serial;
 import java.util.UUID;
 
-public final class EstudanteNotFoundCustomException extends ResourceNotFoundCustomException {
+public final class CustomerNotFoundCustomException extends ResourceNotFoundCustomException {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public EstudanteNotFoundCustomException(final UUID customerId) {
+    public CustomerNotFoundCustomException(final UUID customerId) {
         super("exception.resource.not-found.customer", customerId.toString());
     }
 }

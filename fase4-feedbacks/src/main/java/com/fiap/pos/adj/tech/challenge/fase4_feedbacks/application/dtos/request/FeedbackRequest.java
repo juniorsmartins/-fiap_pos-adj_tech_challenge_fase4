@@ -19,6 +19,6 @@ public record FeedbackRequest(
         UUID curso,
 
         @NotNull
-        UUID estudante
+        UUID customer
 ) {
 }

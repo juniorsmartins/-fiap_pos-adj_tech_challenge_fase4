@@ -12,6 +12,6 @@ public record FeedbackResponse(
 
         CursoResponse curso,
 
-        EstudanteResponse estudante
+        CustomerResponse customer
 ) {
 }

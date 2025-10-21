@@ -4,9 +4,9 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.Custo
 
 import java.util.UUID;
 
-public final class EstudanteUtil {
+public final class CustomerUtil {
 
-    public static CustomerEntity montarEstudanteEntity(UUID id) {
+    public static CustomerEntity buildEntity(UUID id) {
         return new CustomerEntity(id);
     }
 }
