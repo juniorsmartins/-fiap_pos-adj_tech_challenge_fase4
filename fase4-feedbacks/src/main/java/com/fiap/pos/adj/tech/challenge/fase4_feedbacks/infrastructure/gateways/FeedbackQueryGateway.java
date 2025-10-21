@@ -21,7 +21,7 @@ public class FeedbackQueryGateway implements FeedbackQueryOutputPort {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Feedback> consultarPorId(UUID id) {
+    public Optional<Feedback> consultarPorId(final UUID id) {
         return feedbackRepository.findById(id)
                 .map(feedbackPresenter::toFeedback);
     }

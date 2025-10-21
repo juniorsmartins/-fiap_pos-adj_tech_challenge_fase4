@@ -47,6 +47,7 @@ public class FeedbackController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<Void> apagarPorId(@PathVariable(name = "id") final UUID id) {
         feedbackApagarInputPort.apagarPorId(id);
+
         return ResponseEntity
                 .noContent()
                 .build();

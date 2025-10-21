@@ -18,7 +18,7 @@ public class FeedbackApagarUseCase implements FeedbackApagarInputPort {
     private final FeedbackApagarOutputPort feedbackApagarOutputPort;
 
     @Override
-    public void apagarPorId(UUID id) {
+    public void apagarPorId(final UUID id) {
         feedbackQueryOutputPort.consultarPorId(id)
                 .ifPresentOrElse(feedback -> feedbackApagarOutputPort.apagarPorId(feedback.getId()), () -> {
                     throw new FeedbackNotFoundCustomException(id);

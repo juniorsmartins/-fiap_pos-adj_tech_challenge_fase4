@@ -16,7 +16,7 @@ public class FeedbackApagarGateway implements FeedbackApagarOutputPort {
 
     @Transactional
     @Override
-    public void apagarPorId(UUID id) {
+    public void apagarPorId(final UUID id) {
         feedbackRepository.deleteById(id);
     }
 }
