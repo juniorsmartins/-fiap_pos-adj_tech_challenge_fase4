@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.pro
 
 import java.util.UUID;
 
-public record FeedbackKafka(
+public record MessageFeedback(
 
         UUID id,
 

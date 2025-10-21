@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.presenters;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.domain.models.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.jpas.CursoEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.CursoKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.producer.MessageCurso;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class CursoPresenterImpl implements CursoPresenter {
     }
 
     @Override
-    public CursoKafka toKafka(CursoResponse response) {
-        return new CursoKafka(response.id(), response.nome());
+    public MessageCurso toKafka(CursoResponse response) {
+        return new MessageCurso(response.id(), response.nome());
     }
 }

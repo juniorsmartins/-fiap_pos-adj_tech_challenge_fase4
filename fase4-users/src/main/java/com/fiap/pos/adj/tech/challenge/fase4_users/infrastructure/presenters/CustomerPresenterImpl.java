@@ -1,7 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters;
 
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.CustomerKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.producer.MessageCustomer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.jpas.CustomerEntity;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public final class CustomerPresenterImpl implements CustomerPresenter {
     }
 
     @Override
-    public CustomerKafka toKafka(CustomerResponse response) {
-        return new CustomerKafka(response.id(), response.nome(), response.usuario().email());
+    public MessageCustomer toKafka(CustomerResponse response) {
+        return new MessageCustomer(response.id(), response.nome(), response.usuario().email());
     }
 }

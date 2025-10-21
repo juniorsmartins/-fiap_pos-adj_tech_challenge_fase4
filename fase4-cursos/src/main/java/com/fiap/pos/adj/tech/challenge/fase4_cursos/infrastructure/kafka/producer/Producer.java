@@ -2,5 +2,5 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.produc
 
 public interface Producer {
 
-    void sendEventCreateCursos(CursoKafka cursoKafka);
+    void sendEventCreateCursos(MessageCurso messageCurso);
 }

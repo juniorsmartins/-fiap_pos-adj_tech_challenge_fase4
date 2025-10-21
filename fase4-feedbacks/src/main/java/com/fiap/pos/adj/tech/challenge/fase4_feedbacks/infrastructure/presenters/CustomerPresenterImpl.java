@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CustomerResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CustomerEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public final class CustomerPresenterImpl implements CustomerPresenter {
 
     @Override
-    public CustomerEntity toEntity(CustomerKafka kafka) {
+    public CustomerEntity toEntity(MessageCustomer kafka) {
         return new CustomerEntity(kafka.id());
     }
 

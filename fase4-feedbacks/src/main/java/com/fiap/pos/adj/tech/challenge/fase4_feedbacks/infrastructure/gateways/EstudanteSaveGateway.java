@@ -1,7 +1,7 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.gateways;
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.EstudanteSaveOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCustomer;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenters.CustomerPresenter;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class EstudanteSaveGateway implements EstudanteSaveOutputPort {
 
     @Transactional
     @Override
-    public void save(CustomerKafka kafka) {
+    public void save(MessageCustomer kafka) {
         var entity = customerPresenter.toEntity(kafka);
         customerRepository.save(entity);
     }

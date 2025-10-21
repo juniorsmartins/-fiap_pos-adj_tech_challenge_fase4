@@ -18,8 +18,8 @@ public final class ProducerImpl implements Producer {
     private final PropertiesConfig PropertiesConfig;
 
     @Override
-    public void sendEventCreateCursos(CursoKafka cursoKafka) {
-        kafkaTemplate.send(PropertiesConfig.topicEventCreateCursos, UUID.randomUUID().toString(), cursoKafka);
-        log.info("\n\n API-CURSOS sendEventCreateCursos - Mensagem enviada: {}. \n\n", cursoKafka);
+    public void sendEventCreateCursos(MessageCurso messageCurso) {
+        kafkaTemplate.send(PropertiesConfig.topicEventCreateCursos, UUID.randomUUID().toString(), messageCurso);
+        log.info("\n\n API-CURSOS sendEventCreateCursos - Mensagem enviada: {}. \n\n", messageCurso);
     }
 }

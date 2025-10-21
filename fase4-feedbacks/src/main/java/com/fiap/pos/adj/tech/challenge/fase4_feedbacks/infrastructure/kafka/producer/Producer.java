@@ -2,5 +2,5 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.pro
 
 public interface Producer {
 
-    void sendEventCreateFeedbacks(FeedbackKafka kafka);
+    void sendEventCreateFeedbacks(MessageFeedback kafka);
 }

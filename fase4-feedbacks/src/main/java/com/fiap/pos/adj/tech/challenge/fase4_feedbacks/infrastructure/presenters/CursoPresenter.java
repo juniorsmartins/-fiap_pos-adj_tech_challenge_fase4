@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CursoKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCurso;
 
 public interface CursoPresenter {
 
@@ -13,7 +13,7 @@ public interface CursoPresenter {
 
     Curso toCurso(CursoEntity entity);
 
-    CursoEntity toEntity(CursoKafka kafka);
+    CursoEntity toEntity(MessageCurso kafka);
 
     CursoEntity toEntity(Curso curso);
 }

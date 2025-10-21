@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.FeedbackResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Feedback;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.FeedbackEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.FeedbackKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.producer.MessageFeedback;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +44,7 @@ public class FeedbackPresenterImpl implements FeedbackPresenter {
     }
 
     @Override
-    public FeedbackKafka toKafka(FeedbackResponse response) {
-        return new FeedbackKafka(response.id(), response.nota(), response.comentario(), response.curso().id(), response.customer().id());
+    public MessageFeedback toKafka(FeedbackResponse response) {
+        return new MessageFeedback(response.id(), response.nota(), response.comentario(), response.curso().id(), response.customer().id());
     }
 }

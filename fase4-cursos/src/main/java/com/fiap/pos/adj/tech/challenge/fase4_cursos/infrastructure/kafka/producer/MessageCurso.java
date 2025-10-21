@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_cursos.infrastructure.kafka.produc
 
 import java.util.UUID;
 
-public record CursoKafka(
+public record MessageCurso(
 
         UUID id,
 

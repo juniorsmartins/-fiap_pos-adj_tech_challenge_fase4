@@ -2,5 +2,5 @@ package com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.kafka.produce
 
 public interface Producer {
 
-    void sendEventCreateCustomers(CustomerKafka kafka);
+    void sendEventCreateCustomers(MessageCustomer kafka);
 }

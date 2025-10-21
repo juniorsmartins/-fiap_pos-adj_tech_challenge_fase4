@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.usecases;
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.input.CursoCriarInputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.ports.output.CursoSaveOutputPort;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CursoKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCurso;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class CursoCriarUseCase implements CursoCriarInputPort {
     private final CursoSaveOutputPort cursoSaveOutputPort;
 
     @Override
-    public void criar(CursoKafka kafka) {
+    public void criar(MessageCurso kafka) {
         cursoSaveOutputPort.save(kafka);
     }
 }

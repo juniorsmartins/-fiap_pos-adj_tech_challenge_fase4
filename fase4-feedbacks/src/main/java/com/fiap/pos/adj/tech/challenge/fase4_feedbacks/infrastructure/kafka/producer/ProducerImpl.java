@@ -18,7 +18,7 @@ public final class ProducerImpl implements Producer {
     private final PropertiesConfig PropertiesConfig;
 
     @Override
-    public void sendEventCreateFeedbacks(FeedbackKafka kafka) {
+    public void sendEventCreateFeedbacks(MessageFeedback kafka) {
         kafkaTemplate.send(PropertiesConfig.topicEventCreateFeedbacks, UUID.randomUUID().toString(), kafka);
         log.info("\n\n API-FEEDBACKS enviarEventoFeedbacks - Mensagem enviada ao tópico de eventos: {}. \n\n", kafka);
     }

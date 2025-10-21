@@ -1,6 +1,6 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.kafka.consumer;
 
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCustomer;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.context.annotation.Bean;
@@ -22,16 +22,16 @@ public class ConsumerCustomerConfig {
     private final ConsumerBaseConfig consumerBaseConfig;
 
     @Bean
-    public ConsumerFactory<String, CustomerKafka> estudanteConsumerFactory() {
+    public ConsumerFactory<String, MessageCustomer> estudanteConsumerFactory() {
         Map<String, Object> properties = consumerBaseConfig.consumerBaseConfigs();
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, CustomerKafka.class);
+        properties.put(JsonDeserializer.VALUE_DEFAULT_TYPE, MessageCustomer.class);
         return new DefaultKafkaConsumerFactory<>(properties);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, CustomerKafka> estudanteKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, CustomerKafka> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, MessageCustomer> estudanteKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, MessageCustomer> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(estudanteConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
         return factory;

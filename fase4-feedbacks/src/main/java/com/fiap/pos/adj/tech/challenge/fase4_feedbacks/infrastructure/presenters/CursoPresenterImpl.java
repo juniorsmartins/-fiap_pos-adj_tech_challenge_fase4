@@ -3,7 +3,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.CursoResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Curso;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CursoKafka;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.MessageCurso;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class CursoPresenterImpl implements CursoPresenter {
     }
 
     @Override
-    public CursoEntity toEntity(CursoKafka kafka) {
+    public CursoEntity toEntity(MessageCurso kafka) {
         return new CursoEntity(kafka.id());
     }
 

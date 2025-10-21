@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public final class ConsumerCursoKafka {
+public final class ConsumerCurso {
 
     private final CursoCriarInputPort cursoCriarInputPort;
 
     @KafkaListener(topics = "${spring.kafka.topic.event-create-cursos}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "cursoKafkaListenerContainerFactory")
-    public void consumirEventoCreateCursos(final ConsumerRecord<String, CursoKafka> kafka, Acknowledgment ack) {
+    public void consumirEventoCreateCursos(final ConsumerRecord<String, MessageCurso> kafka, Acknowledgment ack) {
 
         try {
             log.info("\n\n API-FEEDBACKS consumirEventoCreateCursos - Mensagem recebida no tópico de eventos: {}. \n\n", kafka);
