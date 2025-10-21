@@ -5,6 +5,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.Cus
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerAtualizarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.CustomerPresenter;
+import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.presenters.RolePresenter;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,8 @@ public class CustomerAtualizarGateway implements CustomerAtualizarOutputPort {
 
     private final CustomerPresenter customerPresenter;
 
+    private final RolePresenter rolePresenter;
+
     @Transactional
     @Override
     public CustomerResponse atualizar(Customer customer) {
@@ -27,6 +30,8 @@ public class CustomerAtualizarGateway implements CustomerAtualizarOutputPort {
                     entity.setNome(customer.getNome());
                     entity.getUser().setEmail(customer.getUser().getEmail());
                     entity.getUser().setPassword(customer.getUser().getPassword());
+                    var roleEntiy = rolePresenter.toEntity(customer.getUser().getRole());
+                    entity.getUser().setRole(roleEntiy);
                     return entity;
                 })
                 .map(customerRepository::save)

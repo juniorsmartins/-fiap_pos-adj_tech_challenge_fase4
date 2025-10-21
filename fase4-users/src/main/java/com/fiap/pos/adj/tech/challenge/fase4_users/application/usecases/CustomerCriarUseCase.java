@@ -5,7 +5,6 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.Custo
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerSaveOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Usuario;
-import com.fiap.pos.adj.tech.challenge.fase4_users.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.validations.CustomerValidation;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.validations.RoleValidation;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class CustomerCriarUseCase implements CustomerCriarInputPort {
 
         customerValidation.checkDuplicateEmail(null, request.email());
 
-        var papel = roleValidation.getOrCreateRole(RoleEnum.ROLE_ESTUDANTE);
+        var papel = roleValidation.getOrCreateRole(request.role());
         var usuario = new Usuario(null, request.email(), request.password(), papel);
         var customer = new Customer(null, request.nome(), true, usuario);
         return customerSaveOutputPort.save(customer);

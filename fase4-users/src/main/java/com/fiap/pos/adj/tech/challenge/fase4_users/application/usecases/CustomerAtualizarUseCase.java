@@ -6,7 +6,6 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.input.Custo
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.ports.output.CustomerAtualizarOutputPort;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Customer;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.entities.Usuario;
-import com.fiap.pos.adj.tech.challenge.fase4_users.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.validations.CustomerValidation;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.validations.RoleValidation;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class CustomerAtualizarUseCase implements CustomerAtualizarInputPort {
 
         customerValidation.checkDuplicateEmail(id, request.email());
 
-        var papel = roleValidation.getOrCreateRole(RoleEnum.ROLE_ESTUDANTE);
+        var papel = roleValidation.getOrCreateRole(request.role());
         var usuario = new Usuario(null, request.email(), request.password(), papel);
         var estudante = new Customer(id, request.nome(), true, usuario);
 
