@@ -9,6 +9,6 @@ public final class EstudanteNotFoundCustomException extends ResourceNotFoundCust
     private static final long serialVersionUID = 1L;
 
     public EstudanteNotFoundCustomException(final UUID customerId) {
-        super("exception.resource.not-found.estudante", customerId.toString());
+        super("exception.resource.not-found.customer", customerId.toString());
     }
 }

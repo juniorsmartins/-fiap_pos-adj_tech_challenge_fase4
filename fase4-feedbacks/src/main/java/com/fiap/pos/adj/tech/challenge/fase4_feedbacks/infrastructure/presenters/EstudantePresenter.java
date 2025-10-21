@@ -2,18 +2,18 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.EstudanteResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Estudante;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CustomerEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
 
 public interface EstudantePresenter {
 
-    EstudanteEntity toEntity(CustomerKafka kafka);
+    CustomerEntity toEntity(CustomerKafka kafka);
 
-    EstudanteEntity toEntity(Estudante model);
+    CustomerEntity toEntity(Estudante model);
 
-    Estudante toModel(EstudanteEntity entity);
+    Estudante toModel(CustomerEntity entity);
 
     EstudanteResponse toResponse(Estudante model);
 
-    EstudanteResponse toResponse(EstudanteEntity entity);
+    EstudanteResponse toResponse(CustomerEntity entity);
 }

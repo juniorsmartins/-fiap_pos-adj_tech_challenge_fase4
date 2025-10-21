@@ -4,7 +4,7 @@ import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.excep
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.EstudanteNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.FeedbackNotFoundCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CursoEntity;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CustomerEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.FeedbackEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.CursoRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.repositories.EstudanteRepository;
@@ -39,21 +39,21 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
     private FeedbackEntity feedbackEntity1;
 
-    private EstudanteEntity estudanteEntity1;
+    private CustomerEntity customerEntity1;
 
     private CursoEntity cursoEntity2;
 
     @BeforeEach
     void setUp() {
-        estudanteEntity1 = EstudanteUtil.montarEstudanteEntity(UUID.randomUUID());
-        estudanteRepository.saveAndFlush(estudanteEntity1);
+        customerEntity1 = EstudanteUtil.montarEstudanteEntity(UUID.randomUUID());
+        estudanteRepository.saveAndFlush(customerEntity1);
 
         var cursoEntity1 = CursoUtil.montarCursoEntity(UUID.randomUUID());
         cursoRepository.saveAndFlush(cursoEntity1);
         cursoEntity2 = CursoUtil.montarCursoEntity(UUID.randomUUID());
         cursoRepository.saveAndFlush(cursoEntity2);
 
-        feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, estudanteEntity1);
+        feedbackEntity1 = FeedbackUtil.montarFeedbackEntity(null, 5, "Ótimo curso!", cursoEntity1, customerEntity1);
         feedbackRepository.save(feedbackEntity1);
     }
 
@@ -68,7 +68,7 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
 
         @Test
         void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
-            var request = FeedbackUtil.montarFeedbackRequest(3, "O professor sempre chega atrasado.", cursoEntity2.getId(), estudanteEntity1.getId());
+            var request = FeedbackUtil.montarFeedbackRequest(3, "O professor sempre chega atrasado.", cursoEntity2.getId(), customerEntity1.getId());
             var response = feedbackController.criar(request);
             assertEquals(HttpStatus.CREATED, response.getStatusCode());
             var body = response.getBody();
@@ -86,7 +86,7 @@ class FeedbackControllerIntegrationTest extends BaseIntegrationTest {
             assertThrows(CursoNotFoundCustomException.class, () -> {
                 var idInexistente = UUID.randomUUID();
                 var request = FeedbackUtil
-                        .montarFeedbackRequest(2, "O professor não domina o conteúdo.", idInexistente, estudanteEntity1.getId());
+                        .montarFeedbackRequest(2, "O professor não domina o conteúdo.", idInexistente, customerEntity1.getId());
                 feedbackController.criar(request);
             });
         }

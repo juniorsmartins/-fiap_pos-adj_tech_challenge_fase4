@@ -2,7 +2,7 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.presenter
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.dtos.response.EstudanteResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.domain.entities.Estudante;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.EstudanteEntity;
+import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.jpas.CustomerEntity;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.infrastructure.kafka.consumer.CustomerKafka;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
 public final class EstudantePresenterImpl implements EstudantePresenter {
 
     @Override
-    public EstudanteEntity toEntity(CustomerKafka kafka) {
-        return new EstudanteEntity(kafka.id());
+    public CustomerEntity toEntity(CustomerKafka kafka) {
+        return new CustomerEntity(kafka.id());
     }
 
     @Override
-    public EstudanteEntity toEntity(Estudante model) {
-        return new EstudanteEntity(model.id());
+    public CustomerEntity toEntity(Estudante model) {
+        return new CustomerEntity(model.id());
     }
 
     @Override
-    public Estudante toModel(EstudanteEntity entity) {
+    public Estudante toModel(CustomerEntity entity) {
         return new Estudante(entity.getId());
     }
 
@@ -32,7 +32,7 @@ public final class EstudantePresenterImpl implements EstudantePresenter {
     }
 
     @Override
-    public EstudanteResponse toResponse(EstudanteEntity entity) {
+    public EstudanteResponse toResponse(CustomerEntity entity) {
         return new EstudanteResponse(entity.getId());
     }
 }

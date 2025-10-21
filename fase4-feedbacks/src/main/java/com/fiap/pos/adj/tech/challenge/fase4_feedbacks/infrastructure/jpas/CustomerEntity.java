@@ -8,12 +8,12 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "estudantes")
+@Table(name = "customers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
 @Setter
-public final class EstudanteEntity {
+public final class CustomerEntity {
 
     @Id
     private UUID id;
