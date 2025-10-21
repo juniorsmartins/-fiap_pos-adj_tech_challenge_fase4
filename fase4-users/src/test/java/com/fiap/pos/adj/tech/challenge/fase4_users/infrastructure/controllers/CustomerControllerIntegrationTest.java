@@ -5,7 +5,6 @@ import com.fiap.pos.adj.tech.challenge.fase4_users.application.configs.exception
 import com.fiap.pos.adj.tech.challenge.fase4_users.application.dtos.response.CustomerResponse;
 import com.fiap.pos.adj.tech.challenge.fase4_users.domain.enums.RoleEnum;
 import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.CustomerRepository;
-import com.fiap.pos.adj.tech.challenge.fase4_users.infrastructure.repositories.RoleRepository;
 import com.fiap.pos.adj.tech.challenge.fase4_users.utils.BaseIntegrationTest;
 import com.fiap.pos.adj.tech.challenge.fase4_users.utils.CustomerUtil;
 import io.restassured.RestAssured;
@@ -37,9 +36,6 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     private CustomerResponse customerResponse;
 
     @BeforeEach
@@ -62,7 +58,7 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
     class CriarValido {
 
         @Test
-        void dadaRequisicaoValida_quandoCriar_entaoRetornarSucesso() {
+        void dadaRequisicaoValida_quandoCriarComRoleCustomer_entaoRetornarSucesso() {
             // Arrange
             var request = CustomerUtil
                     .buildRequest("Robert Martin", "bob@email.com", "11111", RoleEnum.ROLE_CUSTOMER);
@@ -78,6 +74,24 @@ class CustomerControllerIntegrationTest extends BaseIntegrationTest {
                         .body("usuario.email", Matchers.equalTo(request.email()))
                         .body("usuario.password", Matchers.equalTo(request.password()))
                         .body("usuario.role.nome", Matchers.equalTo(RoleEnum.ROLE_CUSTOMER.name()));
+        }
+
+        @Test
+        void dadaRequisicaoValida_quandoCriarComRoleAdmin_entaoRetornarSucesso() {
+            var request = CustomerUtil
+                    .buildRequest("Robert Martin", "bob@email.com", "11111", RoleEnum.ROLE_ADMIN);
+
+            RestAssured.given()
+                        .contentType(ContentType.JSON)
+                        .body(request)
+                    .when()
+                        .post()
+                    .then()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .body("nome", Matchers.equalTo(request.nome()))
+                        .body("usuario.email", Matchers.equalTo(request.email()))
+                        .body("usuario.password", Matchers.equalTo(request.password()))
+                        .body("usuario.role.nome", Matchers.equalTo(RoleEnum.ROLE_ADMIN.name()));
         }
     }
 
