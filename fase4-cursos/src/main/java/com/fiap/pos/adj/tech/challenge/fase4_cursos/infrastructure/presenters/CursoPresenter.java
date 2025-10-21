@@ -15,5 +15,5 @@ public interface CursoPresenter {
 
     CursoEntity toEntity(Curso curso);
 
-    MessageCurso toKafka(CursoResponse response);
+    MessageCurso toMessage(CursoResponse response);
 }

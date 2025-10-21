@@ -41,7 +41,7 @@ public class CustomerController {
         var customer = customerCriarInputPort.criar(request);
         var response = customerPresenter.toResponse(customer);
 
-        producer.sendEventCreateCustomers(customerPresenter.toKafka(response));
+        producer.sendEventCreateCustomers(customerPresenter.toMessage(response));
 
         return ResponseEntity
                 .created(URI.create(URI_CUSTOMER + "/" + response.id()))

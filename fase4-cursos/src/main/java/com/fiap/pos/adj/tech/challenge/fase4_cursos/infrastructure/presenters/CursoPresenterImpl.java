@@ -32,7 +32,7 @@ public class CursoPresenterImpl implements CursoPresenter {
     }
 
     @Override
-    public MessageCurso toKafka(CursoResponse response) {
+    public MessageCurso toMessage(CursoResponse response) {
         return new MessageCurso(response.id(), response.nome());
     }
 }

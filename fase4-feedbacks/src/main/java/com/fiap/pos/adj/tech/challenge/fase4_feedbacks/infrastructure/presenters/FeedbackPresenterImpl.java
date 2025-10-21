@@ -44,7 +44,7 @@ public class FeedbackPresenterImpl implements FeedbackPresenter {
     }
 
     @Override
-    public MessageFeedback toKafka(FeedbackResponse response) {
+    public MessageFeedback toMessage(FeedbackResponse response) {
         return new MessageFeedback(response.id(), response.nota(), response.comentario(), response.curso().id(), response.customer().id());
     }
 }

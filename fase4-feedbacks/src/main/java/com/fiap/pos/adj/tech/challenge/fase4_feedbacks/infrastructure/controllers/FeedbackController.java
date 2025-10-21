@@ -37,7 +37,7 @@ public class FeedbackController {
     public ResponseEntity<FeedbackResponse> criar(@RequestBody @Valid FeedbackRequest request) {
         var response = feedbackCriarInputPort.criar(request);
 
-        producer.sendEventCreateFeedbacks(feedbackPresenter.toKafka(response));
+        producer.sendEventCreateFeedbacks(feedbackPresenter.toMessage(response));
 
         return ResponseEntity
                 .created(URI.create(URI_FEEDBACKS + "/" + response.id()))

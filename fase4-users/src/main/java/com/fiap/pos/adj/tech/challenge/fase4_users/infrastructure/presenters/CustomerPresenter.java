@@ -15,5 +15,5 @@ public interface CustomerPresenter {
 
     Customer toCustomer(CustomerEntity entity);
 
-    MessageCustomer toKafka(CustomerResponse response);
+    MessageCustomer toMessage(CustomerResponse response);
 }

@@ -15,5 +15,5 @@ public interface FeedbackPresenter {
 
     Feedback toFeedback(FeedbackEntity entity);
 
-    MessageFeedback toKafka(FeedbackResponse response);
+    MessageFeedback toMessage(FeedbackResponse response);
 }

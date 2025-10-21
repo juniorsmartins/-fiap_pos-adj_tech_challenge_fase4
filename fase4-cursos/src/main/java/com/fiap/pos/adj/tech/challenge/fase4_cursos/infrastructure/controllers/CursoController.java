@@ -39,7 +39,7 @@ public class CursoController {
     @PostMapping
     public ResponseEntity<CursoResponse> criar(@RequestBody @Valid CursoRequest request) {
         var response = cursoCriarInputPort.criar(request);
-        var messageKafka = cursoPresenter.toKafka(response);
+        var messageKafka = cursoPresenter.toMessage(response);
         producer.sendEventCreateCursos(messageKafka);
 
         return ResponseEntity

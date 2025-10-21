@@ -38,7 +38,7 @@ public final class CustomerPresenterImpl implements CustomerPresenter {
     }
 
     @Override
-    public MessageCustomer toKafka(CustomerResponse response) {
+    public MessageCustomer toMessage(CustomerResponse response) {
         return new MessageCustomer(response.id(), response.nome(), response.usuario().email());
     }
 }
