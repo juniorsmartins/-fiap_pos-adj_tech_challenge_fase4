@@ -1,6 +1,5 @@
 package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions;
 
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http400.BadRequestCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.ResourceNotFoundCustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -56,24 +55,6 @@ public final class GlobalHandler extends ResponseEntityExceptionHandler {
     }
 
     // ---------- TRATAMENTO DE EXCEÇÕES CUSTOMIZADAS ---------- //
-    // ---------- 400 Bad Request ---------- //
-    @ExceptionHandler(BadRequestCustomException.class)
-    public ResponseEntity<ProblemDetail> handleBadRequestCustom(BadRequestCustomException ex, WebRequest webRequest) {
-
-        // ProblemDetail RFC 7807
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        problemDetail.setType(URI.create("https://nomad.com/errors/bad-request"));
-
-        var message = messageSource
-                .getMessage(ex.getMessageKey(), new Object[]{ex.getValue0(), ex.getValue1()}, LocaleContextHolder.getLocale());
-
-        problemDetail.setTitle(message);
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(problemDetail);
-    }
-
     @ExceptionHandler(ResourceNotFoundCustomException.class)
     public ResponseEntity<ProblemDetail> handleResourceNotFound(ResourceNotFoundCustomException ex) {
 
