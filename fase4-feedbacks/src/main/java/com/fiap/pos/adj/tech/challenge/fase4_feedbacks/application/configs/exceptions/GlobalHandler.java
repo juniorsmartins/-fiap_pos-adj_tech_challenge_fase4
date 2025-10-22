@@ -2,7 +2,6 @@ package com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exce
 
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http400.BadRequestCustomException;
 import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http404.ResourceNotFoundCustomException;
-import com.fiap.pos.adj.tech.challenge.fase4_feedbacks.application.configs.exceptions.http409.ResourceConflictRulesCustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -89,24 +88,6 @@ public final class GlobalHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(problemDetail);
-    }
-
-    // ---------- 409 Conflict ---------- //
-    @ExceptionHandler(ResourceConflictRulesCustomException.class)
-    public ResponseEntity<ProblemDetail> handleResourceNotFound(ResourceConflictRulesCustomException ex) {
-
-        // ProblemDetail RFC 7807
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
-        problemDetail.setType(URI.create("https://nomad.com/errors/resource-conflict-rules"));
-
-        var message = messageSource
-                .getMessage(ex.getMessageKey(), new Object[]{ex.getValue()}, LocaleContextHolder.getLocale());
-
-        problemDetail.setTitle(message);
-
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
                 .body(problemDetail);
     }
 }

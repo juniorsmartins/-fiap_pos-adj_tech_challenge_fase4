@@ -19,7 +19,7 @@ spring:
       path: /h2-console
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: ${spring.embedded.kafka.brokers}
     topic:
       event-create-feedbacks: event-create-feedbacks-test
       event-create-users: event-create-users-test
