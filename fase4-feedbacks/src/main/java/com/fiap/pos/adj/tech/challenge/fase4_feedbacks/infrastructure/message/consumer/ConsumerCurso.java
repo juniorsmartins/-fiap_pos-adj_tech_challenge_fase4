@@ -19,7 +19,7 @@ public final class ConsumerCurso {
     public void consumirEventoCreateCursos(final ConsumerRecord<String, MessageCurso> kafka, Acknowledgment ack) {
 
         try {
-            log.info("\n\n API-FEEDBACKS consumirEventoCreateCursos - Mensagem recebida no tópico de eventos: {}. \n\n", kafka);
+            log.info("\n\n API-FEEDBACKS consumirEventoCreateCursos - Mensagem recebida: {}. \n\n", kafka);
             ack.acknowledge(); // Confirmar o processamento da mensagem
             cursoCriarInputPort.criar(kafka.value());
 

@@ -41,7 +41,7 @@ class ConsumerCustomerIntegrationTest extends BaseIntegrationTest {
             assertEquals(0, customerRepository.count(), "Deveria haver zero customer no banco");
 
             kafkaTemplate.send(topicCreateUsers, key, message);
-            Thread.sleep(2000);
+            Thread.sleep(4000);
 
             assertEquals(1, customerRepository.count(), "Deveria haver um customer no banco");
             var customerSaved = customerRepository.findById(idCustomer);

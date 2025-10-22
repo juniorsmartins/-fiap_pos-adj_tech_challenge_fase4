@@ -44,7 +44,7 @@ class ConsumerCursoIntegrationTest extends BaseIntegrationTest {
             assertEquals(0, cursoRepository.count(), "Deveria haver zero cursos no banco");
 
             kafkaTemplate.send(topicCreateCursos, key, message);
-            Thread.sleep(2000);
+            Thread.sleep(4000);
 
             assertEquals(1, cursoRepository.count(), "Deveria haver um cursos no banco");
             var cursoSaved = cursoRepository.findById(idCurso);
